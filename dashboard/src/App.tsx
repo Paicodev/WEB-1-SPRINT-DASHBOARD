@@ -1,13 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './pages/Home/Home';
+import Home from './pages/home/home';
 import ProductsList from './pages/Products/ProductsList';
 import ProductView from './pages/Products/ProductView';
-import Profile from './pages/Profile/Profile';
+import Profile from './pages/profile/profile';
+import Layout from './components/organisms/Layout';
 
 function App() {
   return (
-    // <Routes> agrupa todas las rutas de nuestra aplicación
+    <Layout> {/* El Layout envuelve a todas las rutas para mantener la estructura consistente */}
+    {/*<Routes> agrupa todas las rutas de nuestra aplicación */}
     <Routes>
       
       {/* Mapeo exacto pedido en la US2 */}
@@ -24,6 +26,7 @@ function App() {
       <Route path="*" element={<h1 style={{ color: 'red' }}>Error 404: Página no encontrada</h1>} />
       
     </Routes>
+    </Layout>
   );
 }
 

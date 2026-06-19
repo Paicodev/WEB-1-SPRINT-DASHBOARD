@@ -1,0 +1,19 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Tipografía*/
+    font-family: "Roboto", sans-serif; 
+    
+    /* Fondo*/
+    background-color: #ffffff;
+    background-image: radial-gradient(#92f388 0.45px, #ffffff 0.45px);
+    background-size: 9px 9px;
+    
+    /* Color de texto por defecto */
+    color: #4d4646; 
+}

@@ -1,0 +1,137 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =========================================
+   SIDEBAR (Ancho fijo de 296px)
+   ========================================= */
+.sidebar {
+  width: 296px;
+  min-width: 296px;
+  background-color: #4d4646; 
+  color: white;
+  transition: transform 0.3s ease;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+  border-radius: 2rem 2rem 2rem 2rem;
+}
+
+.sidebar-header h2 {
+  /* Letras verde principal */
+  color: #1ea811; 
+  padding: 20px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   MENÚ Y ENLACES (Estilos de botones)
+   ========================================= */
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  flex-grow: 1;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 20px;
+  border-radius: 1rem;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: #1a8411; /* Tu color de hover original */
+}
+
+.nav-item:focus {
+  background-color: #1a6813; /* Tu color de focus original */
+}
+
+/*Botón activo */
+.nav-item.active {
+  background-color: #1ea811; 
+  font-weight: bold;
+}
+
+.user-profile-link {
+  padding: 20px 10px;
+}
+
+.profile-item {
+  display: block;
+  background-color: #1ea811;
+  border-radius: 1rem;
+  text-align: center;
+  padding: 15px;
+}
+.profile-item:hover {
+  background-color: #1a8411;
+}
+
+/* =========================================
+   MAIN AREA (100% - 296px)
+   ========================================= */
+.main-area {
+  flex-grow: 1;
+  width: calc(100% - 296px);
+  background-color: transparent; 
+  padding: 2rem;
+}
+
+/* Botón Mobile oculto en PC */
+.mobile-menu-btn {
+  display: none;
+}
+
+/* =========================================
+   RESPONSIVE (1024px o menos)
+   ========================================= */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    z-index: 1000;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-area {
+    width: 100%;
+    padding-top: 5rem; /* Espacio para no tapar contenido con el botón mobile */
+  }
+
+  .mobile-menu-btn {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background-color: #1ea811; /* Botón en versión verde */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 1rem; /* Tu radio característico */
+    cursor: pointer;
+    font-family: "Roboto", sans-serif;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+  
+  .mobile-menu-btn:hover {
+    background-color: #1a8411;
+  }
+}
