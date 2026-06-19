@@ -1,4 +1,3 @@
-//a ReactNode le falta el tipo de dato, en realidad seria import 
 import React, { useState } from 'react';
 import type { ReactNode } from 'react';
 import './Layout.css'; // Importamos los estilos
@@ -25,8 +24,14 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
 
         {/* SIDEBAR: 296px */}
       <aside className={`sidebar ${isSidebarVisibleOpen ? 'open' : ''}`}>
-        <p style={{ padding: '20px' }}>Menú principal</p>
+        {/*<p style={{ padding: '20px' }}>Menú principal</p>*/}
+        <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+            <img src= "/img/Negratone2.png" alt="Negratone Dashboard" style={{ maxWidth: '180px', maxHeight: '180px'}} />
+            {/* Nota: el filter hace que el logo se vea blanco. Si tu logo ya tiene letras blancas, borrale el style del filter */}
+      </div>
+
       </aside>
+
 
       {/* MAIN AREA: Ocupa el resto de la pantalla */}
       <main className="main-area">

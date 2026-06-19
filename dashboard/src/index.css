@@ -1,19 +1,23 @@
+/* Importación de la fuente de Negratone */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/roboto/v51/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3GUBGEe.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
 
+/* Reseteo básico y aplicación de la tipografía a todo el proyecto */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    /* Tipografía*/
-    font-family: "Roboto", sans-serif; 
-    
-    /* Fondo*/
-    background-color: #ffffff;
-    background-image: radial-gradient(#92f388 0.45px, #ffffff 0.45px);
-    background-size: 9px 9px;
-    
-    /* Color de texto por defecto */
-    color: #4d4646; 
+  font-family: 'Roboto', sans-serif;
+  background-color: #f6f7fb; /* Un fondo gris clarito para que resalte el panel blanco */
+  color: #4d4646;
 }
