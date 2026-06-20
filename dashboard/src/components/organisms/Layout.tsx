@@ -10,14 +10,28 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({children}) => {
     const [isSidebarVisibleOpen, setSidebarOpen] = useState(false);
 
+    // Abre/Cierra el menú con el botón
     const toggleSidebar = () => {
         setSidebarOpen(!isSidebarVisibleOpen);
+    };
+
+    // Función específica para forzar el cierre (al tocar afuera o al navegar)
+    const closeSidebar = () => {
+        setSidebarOpen(false);
     };
 
     return(
       <div className="layout-container">
         
-        {/* Botón mobile */}
+        {/* ==========================================
+           Fondo oscuro para cerrar al clickear fuera del sidebar en móviles
+            ========================================== */}
+        <div 
+          className={`sidebar-overlay ${isSidebarVisibleOpen ? 'open' : ''}`} 
+          onClick={closeSidebar}
+        ></div>
+
+        {/* Botón Mobile */}
         <button className="mobile-menu-btn" onClick={toggleSidebar}>
           ☰ Menú
         </button>
@@ -29,44 +43,21 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
               <img src="/img/Negratone2.png" alt="Negratone Dashboard" style={{ maxWidth: '180px', maxHeight: '180px'}} />
           </div>
 
-          {/* ==========================================
-              Menú Principal
-              ========================================== */}
           <nav className="main-menu">
-            {/* Inicio */}
-            <NavLink 
-              to="/" 
-              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
-            >
+            {/* Le agregamos onClick={closeSidebar} a cada link para que se cierre al navegar en móviles */}
+            <NavLink to="/" onClick={closeSidebar} className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏠 Inicio
             </NavLink>
-            
-            {/* Productos */}
-            <NavLink 
-              to="/products" 
-              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
-            >
+            <NavLink to="/products" onClick={closeSidebar} className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               📦 Productos
             </NavLink>
-            
-            {/* Categorías */}
-            <NavLink 
-              to="/categories" 
-              className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
-            >
+            <NavLink to="/categories" onClick={closeSidebar} className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏪 Categorías
             </NavLink>
           </nav>
 
-          {/* ==========================================
-              Perfil de Usuario
-              ========================================== */}
           <div className="user-profile-link">
-            <NavLink 
-              to="/profile" 
-              className={({ isActive }) => isActive ? "profile-item active" : "profile-item"} 
-              style={{ color: 'white', textDecoration: 'none' }}
-            >
+            <NavLink to="/profile" onClick={closeSidebar} className={({ isActive }) => isActive ? "profile-item active" : "profile-item"} style={{ color: 'white', textDecoration: 'none' }}>
               👤 Mi Perfil
             </NavLink>
           </div>

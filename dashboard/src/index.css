@@ -32,3 +32,27 @@ body {
   background-color: #1a6813; /* Un verde un poco más oscuro para diferenciar cuando estás en el perfil */
   font-weight: bold;
 }
+
+/* =========================================
+   OVERLAYs
+   ========================================= */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* Un fondo oscuro transparente */
+  z-index: 999; /* Justo debajo del sidebar que tiene 1000 */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  /* Solo se muestra si tiene la clase open */
+  .sidebar-overlay.open {
+    display: block;
+    opacity: 1;
+  }
+}
