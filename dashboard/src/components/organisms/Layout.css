@@ -5,6 +5,7 @@
   display: flex;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* =========================================
@@ -13,116 +14,126 @@
 .sidebar {
   width: 296px;
   min-width: 296px;
-  background-color: #4d4646; 
+  background-color: #4d4646; /* Identidad Negratone */
   color: white;
   transition: transform 0.3s ease;
   height: 100vh;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-  border-radius: 2rem 2rem 2rem 2rem;
-}
-
-.sidebar-header h2 {
-  /* Letras verde principal */
-  color: #1ea811; 
-  padding: 20px;
-  text-align: center;
-  letter-spacing: 1px;
+  z-index: 1000;
 }
 
 /* =========================================
-   MENÚ Y ENLACES (Estilos de botones)
+   MENÚ Y ENLACES
    ========================================= */
 .main-menu {
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  padding: 0 15px;
   flex-grow: 1;
   gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 .nav-item {
   color: #fff;
   text-decoration: none;
-  padding: 15px 20px;
+  padding: 12px 20px;
   border-radius: 1rem;
   font-size: 1rem;
   letter-spacing: 1px;
   transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .nav-item:hover {
-  background-color: #1a8411; /* Tu color de hover original */
+  background-color: #3b3535; /* Hover sutil oscuro */
 }
 
-.nav-item:focus {
-  background-color: #1a6813; /* Tu color de focus original */
-}
-
-/*Botón activo */
 .nav-item.active {
-  background-color: #1ea811; 
+  background-color: #1ea811; /* Verde Negratone */
   font-weight: bold;
 }
 
+/* =========================================
+   PERFIL DE USUARIO
+   ========================================= */
 .user-profile-link {
-  padding: 20px 10px;
+  padding: 20px;
+  margin-top: auto; /* Lo empuja hacia abajo del todo */
 }
 
 .profile-item {
-  display: block;
-  background-color: #1ea811;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #3b3535;
   border-radius: 1rem;
-  text-align: center;
-  padding: 15px;
-}
-.profile-item:hover {
-  background-color: #1a8411;
+  padding: 10px 15px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
+.profile-item:hover, .profile-item.active {
+  background-color: #1ea811;
+}
+
+.avatar-placeholder {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4d4646;
+}
 
 /* =========================================
-   MAIN AREA (100% - 296px)
+   MAIN AREA
    ========================================= */
 .main-area {
   flex-grow: 1;
   width: calc(100% - 296px);
   background-color: transparent; 
-  /* Convertimos el area en una columna del alto total de la pantalla */
   display: flex;
   flex-direction: column;
   height: 100vh; 
 }
 
-/* Encabezado fijo de 72px */
 .main-header {
   height: 72px;
-  min-height: 72px; /* Evita que se achique */
+  min-height: 72px;
   width: 100%;
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb; /* línea para separarlo del contenido */
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
   padding: 0 2rem;
   z-index: 10;
 }
 
-/* Contenido scrolleable */
 .main-content {
   flex-grow: 1;
   width: 100%;
   padding: 2rem;
-  /* si el contenido es muy largo, se genera una barra de scroll interna */
   overflow-y: auto; 
 }
+
+.mobile-menu-btn {
+  display: none;
+}
+
 /* =========================================
    RESPONSIVE (1024px o menos)
    ========================================= */
 @media (max-width: 1024px) {
   .sidebar {
     position: fixed;
-    z-index: 1000;
     transform: translateX(-100%);
   }
 
@@ -130,29 +141,35 @@
     transform: translateX(0);
   }
 
+  /* Capa oscura que tapa el contenido cuando el menú está abierto */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999; /* Un punto menos que el sidebar */
+  }
+
   .main-area {
     width: 100%;
-    padding-top: 5rem; /* Espacio para no tapar contenido con el botón mobile */
+  }
+
+  .main-header {
+    padding-left: 4rem; /* Hacemos espacio para el botón hamburguesa */
   }
 
   .mobile-menu-btn {
     display: block;
     position: absolute;
-    top: 15px;
+    top: 16px;
     left: 15px;
     z-index: 1001;
-    background-color: #1ea811; /* Botón en versión verde */
-    color: white;
+    background-color: transparent;
+    color: #4d4646;
     border: none;
-    padding: 10px 15px;
-    border-radius: 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    font-family: "Roboto", sans-serif;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  }
-  
-  /*Efecto para que el botón se vea más interactivo al pasar el mouse por encima */
-  .mobile-menu-btn:hover {
-    background-color: #1a8411;
   }
 }

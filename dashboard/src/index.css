@@ -21,3 +21,14 @@ body {
   background-color: #f6f7fb; /* Un fondo gris clarito para que resalte el panel blanco */
   color: #4d4646;
 }
+
+/* Botón activo */
+.nav-item.active {
+  background-color: #1ea811; 
+  font-weight: bold;
+}
+
+.profile-item.active {
+  background-color: #1a6813; /* Un verde un poco más oscuro para diferenciar cuando estás en el perfil */
+  font-weight: bold;
+}
