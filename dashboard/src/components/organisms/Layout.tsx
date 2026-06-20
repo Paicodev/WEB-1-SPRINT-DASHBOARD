@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import type { ReactNode } from 'react';
-import './Layout.css'; // Importamos los estilos
+import { NavLink } from 'react-router-dom'; // Importación necesaria para la navegación
+import './Layout.css'; 
 
-//Props que recibe este componente 
 interface LayoutProps {
   children: ReactNode;
 }
@@ -15,31 +15,49 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
     const toggleSidebar = () => {
         setSidebarOpen(!isSidebarVisibleOpen);
     };
+
     return(
-            <div className="layout-container">
-                {/* Botón temporal para abrir el menú en móviles */}
-      <button className="mobile-menu-btn" onClick={toggleSidebar}>
-        ☰ Menú
         </button>
 
         {/* SIDEBAR: 296px */}
-      <aside className={`sidebar ${isSidebarVisibleOpen ? 'open' : ''}`}>
-        {/*<p style={{ padding: '20px' }}>Menú principal</p>*/}
-        <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-            <img src= "/img/Negratone2.png" alt="Negratone Dashboard" style={{ maxWidth: '180px', maxHeight: '180px'}} />
-            {/* Nota: el filter hace que el logo se vea blanco. Si tu logo ya tiene letras blancas, borrale el style del filter */}
+        <aside className={`sidebar ${isSidebarVisibleOpen ? 'open' : ''}`}>
+          <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+              <img src="/img/Negratone2.png" alt="Negratone Dashboard" style={{ maxWidth: '180px', maxHeight: '180px'}} />
+          </div>
+
+          {/* Menú de Navegación para mas adelante*/}
+          <nav className="main-menu">
+            <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              🏠 Inicio
+            </NavLink>
+            <NavLink to="/products" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              📦 Productos
+            </NavLink>
+            <NavLink to="/categories" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              🏪 Categorías
+            </NavLink>
+          </nav>
+
+          <div className="user-profile-link">
+            <NavLink to="/profile" className="profile-item" style={{ color: 'white', textDecoration: 'none' }}>
+              👤 Mi Perfil
+            </NavLink>
+          </div>
+        </aside>
+
+        <main className="main-area">
+          
+          <header className="main-header">
+            <h3 style={{ margin: 0, color: '#4d4646' }}>Panel de Control</h3>
+          </header>
+
+          <div className="main-content">
+            {children}
+          </div>
+
+        </main>
+
       </div>
-
-      </aside>
-
-
-      {/* MAIN AREA: Ocupa el resto de la pantalla */}
-      <main className="main-area">
-        {/*(Home, Productos, etc.) */}
-        {children}
-      </main>
-            </div>
-
     );
 };
 

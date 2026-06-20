@@ -81,6 +81,7 @@
   background-color: #1a8411;
 }
 
+
 /* =========================================
    MAIN AREA (100% - 296px)
    ========================================= */
@@ -88,14 +89,33 @@
   flex-grow: 1;
   width: calc(100% - 296px);
   background-color: transparent; 
+  /* Convertimos el area en una columna del alto total de la pantalla */
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+}
+
+/* Encabezado fijo de 72px */
+.main-header {
+  height: 72px;
+  min-height: 72px; /* Evita que se achique */
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb; /* línea para separarlo del contenido */
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 10;
+}
+
+/* Contenido scrolleable */
+.main-content {
+  flex-grow: 1;
+  width: 100%;
   padding: 2rem;
+  /* si el contenido es muy largo, se genera una barra de scroll interna */
+  overflow-y: auto; 
 }
-
-/* Botón Mobile oculto en PC */
-.mobile-menu-btn {
-  display: none;
-}
-
 /* =========================================
    RESPONSIVE (1024px o menos)
    ========================================= */
@@ -125,12 +145,13 @@
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 1rem; /* Tu radio característico */
+    border-radius: 1rem;
     cursor: pointer;
     font-family: "Roboto", sans-serif;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
   }
   
+  /*Efecto para que el botón se vea más interactivo al pasar el mouse por encima */
   .mobile-menu-btn:hover {
     background-color: #1a8411;
   }
