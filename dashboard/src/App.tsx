@@ -20,6 +20,8 @@ function App() {
       <Route path="/products/new" element={<h1>➕ Agregar Producto</h1>} />
       <Route path="/products/:id" element={<ProductView />} />
       
+      <Route path="/categories/new" element={<h1>➕ Agregar Categoría</h1>} />
+
       <Route path="/profile" element={<Profile />} />
 
       {/* Ruta por default para el Error 404 */}
