@@ -14,7 +14,7 @@
        Se mantiene la estructura del diseño. */
 }
 
-.products-list-header h1 {
+.header-title {
     font-size: 1.75rem;
     font-weight: 600;
 }
@@ -47,11 +47,20 @@
     border-radius: 0.5rem;
     text-decoration: none;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     transition: background-color 0.2s;
 }
 
 .add-button:hover {
     background-color: #1a8c0f;
+}
+
+.add-button-icon {
+    font-size: 1.25rem;
+    line-height: 1;
 }
 
 .products-list-content {
@@ -74,6 +83,7 @@
 
 .products-table th,
 .products-table td {
+    vertical-align: middle;
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #e5e7eb;
@@ -94,6 +104,20 @@
     background-color: #f6f7fb;
 }
 
+.column-image {
+    width: 80px;
+}
+
+.cell-image {
+    width: 80px;
+    padding: 0.5rem;
+}
+
+.product-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+}
 /* Estilos para la primera y última celda para bordes redondeados en la tabla */
 .products-table th:first-child,
 .products-table td:first-child {
@@ -105,4 +129,36 @@
 .products-table td:last-child {
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
+}
+
+/* --- BONUS: ESTILOS RESPONSIVE --- */
+@media (max-width: 768px) {
+    .products-list-header {
+        gap: 1rem;
+    }
+
+    .add-button-text {
+        display: none; /* Ocultamos el texto del botón */
+    }
+
+    .add-button {
+        width: 44px; /* Hacemos el botón cuadrado */
+        height: 44px;
+        padding: 0;
+    }
+
+    .search-input {
+        transition: width 0.3s ease-in-out;
+        width: 44px; /* Por defecto, el input es pequeño */
+    }
+
+    /* Cuando el input de búsqueda está activo */
+    .products-list-header.search-active .search-input {
+        width: 100%; /* Se expande */
+    }
+
+    .products-list-header.search-active .header-title,
+    .products-list-header.search-active .add-button {
+        display: none; /* Ocultamos el título y el botón */
+    }
 }
