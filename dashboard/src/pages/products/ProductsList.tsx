@@ -1,81 +1,113 @@
-import React, { useState } from 'react'; // Quitamos useEffect porque ya no lo usamos aquí
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ImageWithLoader from './ImageWithLoader';
+import './ProductsList.css';
 
-//productos temporales para mostrar en la lista
-const productos = [
-    { id: 1, name: 'Termo Stanley 1L', category: 'Bazar', price: 85000, stock: 15 },
-    { id: 2, name: 'Auriculares Sony WH-1000XM4', category: 'Tecnología', price: 350000, stock: 3 },
-    { id: 3, name: 'Café de Especialidad 250g', category: 'Alimentos', price: 9500, stock: 40 },
-    { id: 4, name: 'Silla Gamer Ergonómica', category: 'Muebles', price: 120000, stock: 0 },
-    { id: 5, name: 'Taza de Cerámica Gato', category: 'Bazar', price: 4500, stock: 10 }
+// TODO (adaptar al modelo de DB) Definimos el tipo de dato 
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  imageUrl: string;
+}
+
+// --- SIMULACIÓN DE API ---
+// TODO En un futuro, esto vendrá de una petición real a "fetch('/api/products')""
+const mockProducts: Product[] = [
+  // Usamos placehold.co para simular la carga de imágenes con un pequeño retardo
+  { id: 1, name: 'Laptop Gamer Pro', category: 'Electrónica', price: 1200, stock: 15, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Laptop&slow=1' },
+  { id: 2, name: 'Smartphone X1', category: 'Electrónica', price: 800, stock: 30, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Phone&slow=1' },
+  { id: 3, name: 'Auriculares Inalámbricos', category: 'Accesorios', price: 150, stock: 50, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Headphones&slow=1' },
+  { id: 4, name: 'Teclado Mecánico RGB', category: 'Accesorios', price: 100, stock: 40, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Keyboard&slow=1' },
+  { id: 5, name: 'Monitor 4K 27"', category: 'Monitores', price: 450, stock: 20, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Monitor&slow=1' },
 ];
 
-const ProductsList = () => {
-    const [searchTerm, setSearchTerm] = useState("");
-    
-    const filteredProducts = productos.filter(product => {
-        const lowerCaseSearch = searchTerm.toLowerCase();
-        const matchName = product.name.toLowerCase().includes(lowerCaseSearch);
-        const matchCategory = product.category.toLowerCase().includes(lowerCaseSearch);
-        
-        return matchName || matchCategory;
-    });
+const ProductsList: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const navigate = useNavigate();
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    };
+  useEffect(() => {
+    // Simulamos la llamada a la API con un retardo de 1.5 segundos
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setProducts(mockProducts);
+      setLoading(false);
+    }, 1500);
 
-    return (
-        <div style={{ padding: '2rem' }}>
-            
-            {/* ENCABEZADO Y BUSCADOR */}
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-                <h1 style={{ color: '#4d4646' }}>Productos</h1>
-                
-                {/* Contenedor del Input y el Botón */}
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <input 
-                        type="text" 
-                        placeholder="Buscar por nombre o categoría..." 
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        style={{ padding: '0.6rem 1rem', borderRadius: '1rem', border: '1px solid #ccc', outline: 'none', minWidth: '280px' }}
-                    />
-                    
-                    <Link to="/products/new" style={{ backgroundColor: '#1ea811', color: '#fff', padding: '0.6rem 1rem', borderRadius: '1rem', textDecoration: 'none', fontWeight: 'bold' }}>
-                        + Agregar Producto
-                    </Link>
-                </div> {/* ✅ CORRECTO: El div se cierra DESPUÉS de envolver al input y al Link */}
-            </header>
+    // Buena práctica: limpiar el temporizador si el componente se desmonta
+    return () => clearTimeout(timer);
+  }, []); // El array vacío [] significa que este efecto se ejecuta solo una vez
 
-            {filteredProducts.length === 0 ? (
-                // Si escriben algo que no existe (ej: "Pizza"), mostramos el aviso
-                <div style={{ textAlign: 'center', padding: '3rem', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                    <h3 style={{ color: '#4d4646' }}>No se encontraron productos que coincidan con "{searchTerm}"</h3>
-                    <button onClick={() => setSearchTerm("")} style={{ marginTop: '1rem', backgroundColor: '#1ea811', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '1rem', cursor: 'pointer' }}>
-                        Borrar búsqueda
-                    </button>
-                </div>
-            ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                    {filteredProducts.map(product => (
-                        <div key={product.id} style={{ backgroundColor: '#fff', borderRadius: '1rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ fontSize: '0.8rem', backgroundColor: '#4d4646', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '1rem' }}>
-                                    {product.category}
-                                </span>
-                                <span style={{ fontSize: '0.8rem', color: product.stock > 0 ? '#1ea811' : 'red', fontWeight: 'bold' }}>
-                                    {product.stock > 0 ? `Stock: ${product.stock}` : 'Sin Stock'}
-                                </span>
-                            </div>
-                            <h3 style={{ color: '#4d4646', margin: '0.5rem 0' }}>{product.name}</h3>
-                            <h2 style={{ color: '#1ea811', margin: '0' }}>${product.price}</h2>
-                        </div>
-                    ))}
-                </div>
-            )}
+  // Filtramos los productos basándonos en el término de búsqueda
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="products-list-container">
+      <header className={`products-list-header ${isSearchActive ? 'search-active' : ''}`}>
+        <h1 className="header-title">Productos</h1>
+        <div className="header-actions">
+          <input
+            type="text"
+            placeholder="Buscar producto..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsSearchActive(true)}
+            onBlur={() => setIsSearchActive(false)}
+          />
+          <Link to="/products/new" className="add-button">
+            <span className="add-button-icon">+</span>
+            <span className="add-button-text">Agregar Producto</span>
+          </Link>
         </div>
-    );
-};   
+      </header>
+
+      <div className="products-list-content">
+        {loading ? (
+          <div className="loading-message">Cargando...</div>
+        ) : (
+          <table className="products-table">
+            <thead>
+              <tr>
+                <th className="column-image">Imagen</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProducts.map((product) => (
+                <tr key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
+                  <td className="cell-image">
+                    <ImageWithLoader src={product.imageUrl} alt={product.name} className="product-image" />
+                  </td>
+                  <td>{product.id}</td>
+                  <td>{product.name}</td>
+                  <td>{product.category}</td>
+                  <td>${product.price.toFixed(2)}</td>
+                  <td>{product.stock}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {!loading && filteredProducts.length === 0 && (
+            <div className="no-results-message">
+                No se encontraron productos que coincidan con la búsqueda.
+            </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default ProductsList;
