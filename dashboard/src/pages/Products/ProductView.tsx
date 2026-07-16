@@ -105,7 +105,7 @@ useEffect(() => {
         <button className="btn-danger-pill" onClick={handleEliminar}>Eliminar</button>
       </div>
 
-      {/* SUMMARY CARD (Adaptado al diseño) */}
+      {/*  TARJETAS DE RESUMEN */}
       <div className="summary-card">
         <img 
           src={product.image || 'https://placehold.co/100x100/333/white?text=Img'} 
@@ -127,8 +127,8 @@ useEffect(() => {
               <span className="stat-label">STOCK<br/>DISPONIBLE</span>
             </div>
 
-            <Link to={`/stores/${product.store}`} className="store-pill">
-              <span className="store-avatar">🐶</span>
+            <Link to="/" className="store-pill">
+              <span className="store-avatar">🟢</span>
               {product.store}
             </Link>
           </div>
@@ -178,11 +178,11 @@ useEffect(() => {
           <label>Nueva Imagen</label>
           <div className="image-controls">
             <input type="text" name="image" value={editForm.image} onChange={handleInputChange} placeholder="URL de la Imagen" />
-            <button type="button" className="btn-secondary" onClick={handleRemoveImage}>Volar Imagen</button>
+            <button type="button" className="btn-secondary" onClick={handleRemoveImage}>Eliminar Imagen</button>
           </div>
         </div>
 
-        {/* ¡LOS BOTONES DEBEN IR AQUÍ ADENTRO DEL RETURN! */}
+        {/* BOTONES DE ACCION*/}
         <div className="form-actions">
           <button type="button" className="btn-cancel" onClick={handleCancelar}>Cancelar</button>
           <button type="button" className="btn-save" onClick={handleGuardar}>Guardar Cambios</button>
