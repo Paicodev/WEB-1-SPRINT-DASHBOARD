@@ -101,7 +101,7 @@ useEffect(() => {
       
       {/* HEADER */}
       <div className="product-view-header">
-        <h2>Productos &gt; #{product.id}</h2>
+        <h2><Link to="/products">Productos</Link> &gt; #{product.id}</h2>
         <button className="btn-danger-pill" onClick={handleEliminar}>Eliminar</button>
       </div>
 
