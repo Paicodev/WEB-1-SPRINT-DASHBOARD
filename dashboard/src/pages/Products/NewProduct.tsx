@@ -131,7 +131,7 @@ export default function NewProduct() {
                     Guardar Producto
                 </button>
 
-               //Botones de accion para guardar o cancelar la creación del producto
+               
                 <div className="form-actions">
                     <button type="button" className="btn-cancel" onClick={handleCancel}>
                         Cancelar

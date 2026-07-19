@@ -13,17 +13,6 @@ interface Product {
   imageUrl: string;
 }
 
-// --- SIMULACIÓN DE API ---
-// TODO En un futuro, esto vendrá de una petición real a "fetch('/api/products')""
-const mockProducts: Product[] = [
-  // Usamos placehold.co para simular la carga de imágenes con un pequeño retardo
-  { id: 1, name: 'Laptop Gamer Pro', category: 'Electrónica', price: 1200, stock: 15, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Laptop&slow=1' },
-  { id: 2, name: 'Smartphone X1', category: 'Electrónica', price: 800, stock: 30, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Phone&slow=1' },
-  { id: 3, name: 'Auriculares Inalámbricos', category: 'Accesorios', price: 150, stock: 50, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Headphones&slow=1' },
-  { id: 4, name: 'Teclado Mecánico RGB', category: 'Accesorios', price: 100, stock: 40, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Keyboard&slow=1' },
-  { id: 5, name: 'Monitor 4K 27"', category: 'Monitores', price: 450, stock: 20, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Monitor&slow=1' },
-];
-
 const ProductsList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,16 +21,30 @@ const ProductsList: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulamos la llamada a la API con un retardo de 1.5 segundos
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setProducts(mockProducts);
-      setLoading(false);
-    }, 1500);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        
+        // Petición GET al endpoint principal de productos en el backend
+        const response = await fetch('http://localhost:3000/products');
+        
+        if (response.ok) {
+          // Si Express responde con un status 200, parseamos el JSON
+          const data = await response.json();
+          setProducts(data); // Guardamos los datos reales en el estado de React
+        } else {
+          console.error("El servidor respondió con un error:", response.status);
+        }
+      } catch (error) {
+        console.error("Error de red al intentar conectar con el backend:", error);
+      } finally {
+        // Independientemente de si falla o tiene éxito, quitamos el loader
+        setLoading(false); 
+      }
+    };
 
-    // Buena práctica: limpiar el temporizador si el componente se desmonta
-    return () => clearTimeout(timer);
-  }, []); // El array vacío [] significa que este efecto se ejecuta solo una vez
+    fetchProducts();
+  }, []); // El array vacío asegura que la petición ocurra una sola vez al cargar la página
 
   // Filtramos los productos basándonos en el término de búsqueda
   const filteredProducts = products.filter(product =>

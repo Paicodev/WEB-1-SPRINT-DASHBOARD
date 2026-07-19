@@ -19,35 +19,36 @@ export default function ProductView() {
   // Estado borrador para el formulario (permite editar sin pisar los datos reales hasta guardar)
   const [editForm, setEditForm] = useState(product);
 
-useEffect(() => {
-    
-    const mockProducts = [
-      { id: 1, name: 'Laptop Gamer Pro', category: 'Electrónica', price: 1200, stock: 15, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Laptop&slow=1' },
-      { id: 2, name: 'Smartphone X1', category: 'Electrónica', price: 800, stock: 30, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Phone&slow=1' },
-      { id: 3, name: 'Auriculares Inalámbricos', category: 'Accesorios', price: 150, stock: 50, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Headphones&slow=1' },
-      { id: 4, name: 'Teclado Mecánico RGB', category: 'Accesorios', price: 100, stock: 40, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Keyboard&slow=1' },
-      { id: 5, name: 'Monitor 4K 27"', category: 'Monitores', price: 450, stock: 20, imageUrl: 'https://placehold.co/400x400/4d4646/white?text=Monitor&slow=1' },
-    ];
+  useEffect(() => {
+    const fetchProduct = async () => {
+        try {
+            // Hacemos el fetch dinámico usando el ID capturado de la URL
+            const response = await fetch(`http://localhost:3000/products/api/${id}`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                
+                // Mapeamos los campos que vienen de tu BD
+                const productData = {
+                    id: data.id.toString(),
+                    name: data.name,
+                    description: data.description || 'Descripción no disponible',
+                    price: data.price,
+                    stock: data.stock,
+                    store: 'Negratone Oficial', // O el campo de tienda que tengas en BD
+                    image: data.image || ''
+                };
 
-    // 2. Buscamos el producto. Number() para igualarlos)
-    const productoEncontrado = mockProducts.find(p => p.id === Number(id));
+                setProduct(productData);
+                setEditForm(productData);
+            }
+        } catch (error) {
+            console.error("Error de conexión:", error);
+        }
+    };
 
-    // 3. Si lo encontramos, lo adaptamos al formulario
-    if (productoEncontrado) {
-      const datosAdaptados = {
-        id: productoEncontrado.id.toString(),
-        name: productoEncontrado.name,
-        description: 'Descripción no disponible en el listado general.',
-        price: productoEncontrado.price,
-        stock: productoEncontrado.stock,
-        store: 'Negratone Oficial',
-        image: productoEncontrado.imageUrl
-      };
-
-      setProduct(datosAdaptados);
-      setEditForm(datosAdaptados);
-    }
-  }, [id]);
+    fetchProduct();
+}, [id]); // Esto asegura que si cambias de producto, se vuelva a pedir al servidor
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
