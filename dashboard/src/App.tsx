@@ -6,6 +6,9 @@ import ProductView from './pages/Products/ProductView';
 import Profile from './pages/profile/profile';
 import Layout from './components/organisms/Layout';
 import NewProduct from './pages/Products/NewProduct';
+import CategoriesList from "./pages/Categories/CategoriesList";
+import CategoryView from "./pages/Categories/CategoryView";
+import NewCategory from "./pages/Categories/NewCategory";
 
 function App() {
   return (
@@ -13,7 +16,7 @@ function App() {
     {/*<Routes> agrupa todas las rutas de nuestra aplicación */}
     <Routes>
       
-      {/* Mapeo exacto pedido en la US2 */}
+      {/* Mapeo de rutas a componentes */}
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<ProductsList />} />
       
@@ -21,7 +24,9 @@ function App() {
       <Route path="/products/new" element={<NewProduct />} />
       <Route path="/products/:id" element={<ProductView />} />
       
-      <Route path="/categories/new" element={<h1>➕ Agregar Categoría</h1>} />
+      <Route path="/categories" element={<CategoriesList />} />
+      <Route path="/categories/new" element={<NewCategory />} />
+      <Route path="/categories/:id" element={<CategoryView />} />
 
       <Route path="/profile" element={<Profile />} />
 
