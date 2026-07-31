@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './PagesTemp/HomeTemp/Home';
-import ProductsList from './PagesTemp/ProductsTemp/ProductsList';
-import ProductView from './PagesTemp/ProductsTemp/ProductView';
-import Profile from './PagesTemp/ProfileTemp/Profile';
+import Home from './Pages/Home/Home';
+import ProductsList from './Pages/Products/ProductsList';
+import ProductView from './Pages/Products/ProductView';
+import Profile from './Pages/Profile/Profile';
 import Layout from './Components/Organisms/Layout';
-import NewProduct from './PagesTemp/ProductsTemp/NewProduct';
-import CategoriesList from "./PagesTemp/CategoriesTemp/CategoriesList";
-import CategoryView from "./PagesTemp/CategoriesTemp/CategoryView";
-import NewCategory from "./PagesTemp/CategoriesTemp/NewCategory";
+import NewProduct from './Pages/Products/NewProduct';
+import CategoriesList from "./Pages/Categories/CategoriesList";
+import CategoryView from "./Pages/Categories/CategoryView";
+import NewCategory from "./Pages/Categories/NewCategory";
 
 function App() {
   return (
