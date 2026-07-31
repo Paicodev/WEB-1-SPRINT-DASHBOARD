@@ -1,4 +1,6 @@
 import DashboardCard from '../../components/organisms/DashboardCard';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import './home.css';
 
 const Home = () => {
@@ -6,9 +8,29 @@ const Home = () => {
     //TODO Dato temporal: Reemplazar con la información del usuario cuando se implementen las sesiones.
     const userName = "Geronimo";
 
-    //TODO Datos temporales: Estos valores vendrán de una API en el futuro.
-    const productCount = 125;
-    const categoryCount = 12;
+    const [stats, setStats] = useState({
+    totalProducts: 0,
+    totalCategories: 0
+    });
+    
+    useEffect(() => {
+    const fetchStats = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/api/stats");
+
+            if (!response.ok) {
+                throw new Error("No se pudieron obtener las estadísticas.");
+            }
+
+            const data = await response.json();
+            setStats(data);
+        } catch (error) {
+            console.error("Error al cargar las estadísticas:", error);
+        }
+    };
+
+    fetchStats();
+}, []);
 
     return (
         <div className="home-container">
@@ -21,7 +43,7 @@ const Home = () => {
                 <DashboardCard 
                     icon="📦"
                     title="Productos"
-                    count={productCount}
+                    count={stats.totalProducts}
                     listPath="/products"
                     newPath="/products/new"
                     newButtonText="Agregar Producto"
@@ -29,7 +51,7 @@ const Home = () => {
                 <DashboardCard 
                     icon="🏪"
                     title="Categorías"
-                    count={categoryCount}
+                    count={stats.totalCategories}
                     listPath="/categories"
                     newPath="/categories/new" //TODO Ruta a crear en App.tsx
                     newButtonText="Agregar Categoría"

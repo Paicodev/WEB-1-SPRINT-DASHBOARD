@@ -31,7 +31,7 @@ export default function NewProduct() {
             price: 0,
             stock: 0, 
             store: "Negratone Oficial", 
-            image: ""
+            image: "string"
         });
     };
 
@@ -50,7 +50,7 @@ export default function NewProduct() {
         //PETICIÓN HTTP AL BACKEND
         try {
             // Usamos la API fetch nativa para hacer el POST al servidor Express
-            const response = await fetch('http://localhost:3000/products/new', {
+            const response = await fetch('http://localhost:3000/api/products', {
                 method: 'POST', // Indicamos que es una inserción
                 headers: {
                     'Content-Type': 'application/json' // Le avisamos a Express que enviamos JSON

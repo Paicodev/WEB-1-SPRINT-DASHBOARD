@@ -26,7 +26,7 @@ const ProductsList: React.FC = () => {
         setLoading(true);
         
         // Petición GET al endpoint principal de productos en el backend
-        const response = await fetch('http://localhost:3000/products');
+        const response = await fetch('http://localhost:3000/api/products');
         
         if (response.ok) {
           // Si Express responde con un status 200, parseamos el JSON
