@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './pages/home/home';
+import Home from './pages/Home/Home';
 import ProductsList from './pages/Products/ProductsList';
 import ProductView from './pages/Products/ProductView';
-import Profile from './pages/profile/profile';
+import Profile from './pages/Profile/Profile';
 import Layout from './components/organisms/Layout';
 import NewProduct from './pages/Products/NewProduct';
 import CategoriesList from "./pages/Categories/CategoriesList";
