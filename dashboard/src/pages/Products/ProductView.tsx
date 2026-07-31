@@ -75,27 +75,61 @@ export default function ProductView() {
     setEditForm(product);
   };
 
-  const handleGuardar = () => {
-    if (!editForm.name.trim()) {
-      alert("Error: El nombre es requerido.");
-      return;
-    }
-    if (!Number.isInteger(editForm.price) || !Number.isInteger(editForm.stock)) {
-      alert("Error: El precio y el stock deben ser enteros.");
-      return;
-    }
+  const handleGuardar = async () => {
+  if (!editForm.name.trim()) {
+    alert("Error: El nombre es requerido.");
+    return;
+  }
 
-    console.log(`[PUT] /products/${id}/edit`, editForm);
-    setProduct(editForm);
-    alert("¡Producto actualizado!");
-  };
+  if (!Number.isInteger(editForm.price) || !Number.isInteger(editForm.stock)) {
+    alert("Error: El precio y el stock deben ser enteros.");
+    return;
+  }
 
-  const handleEliminar = () => {
-    if (window.confirm("¿Eliminar este producto permanentemente?")) {
-      console.log(`[DELETE] /products/${id}/delete`);
+  try {
+    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(editForm)
+    });
+
+    if (response.ok) {
+      const updatedProduct = await response.json();
+      setProduct(updatedProduct);
+      setEditForm(updatedProduct);
+      alert("¡Producto actualizado!");
+    } else {
+      alert("No se pudo actualizar el producto.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Error de conexión con el servidor.");
+  }
+};
+
+  const handleEliminar = async () => {
+  if (!window.confirm("¿Eliminar este producto permanentemente?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "DELETE"
+    });
+
+    if (response.ok) {
+      alert("¡Producto eliminado!");
       navigate("/products");
+    } else {
+      alert("No se pudo eliminar el producto.");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Error de conexión con el servidor.");
+  }
+};
 
   return (
     <div className="product-view-container">
