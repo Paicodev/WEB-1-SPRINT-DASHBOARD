@@ -1,4 +1,4 @@
-import DashboardCard from '../../components/organisms/DashboardCard';
+import DashboardCard from '../../ComponentsTemp/OrganismsTemp/DashboardCard';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import './home.css';
