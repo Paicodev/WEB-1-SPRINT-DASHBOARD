@@ -20,7 +20,7 @@ export default function CategoryView() {
 
             try {
 
-                const response = await fetch(`http://localhost:3000/api/categories/${id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`);
 
                 if(response.ok){
 

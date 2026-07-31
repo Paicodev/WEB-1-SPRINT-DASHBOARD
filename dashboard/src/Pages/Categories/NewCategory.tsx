@@ -34,7 +34,7 @@ export default function NewCategory() {
 
         try{
 
-            const response = await fetch("http://localhost:3000/api/categories",{
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories`,{
 
                 method:"POST",
 

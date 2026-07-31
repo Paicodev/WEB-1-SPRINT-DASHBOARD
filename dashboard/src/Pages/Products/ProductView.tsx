@@ -23,7 +23,7 @@ export default function ProductView() {
     const fetchProduct = async () => {
         try {
             // Hacemos el fetch dinámico usando el ID capturado de la URL
-            const response = await fetch(`http://localhost:3000/api/products/${id}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
             
             if (response.ok) {
                 const data = await response.json();

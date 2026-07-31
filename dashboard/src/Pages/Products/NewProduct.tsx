@@ -50,7 +50,7 @@ export default function NewProduct() {
         //PETICIÓN HTTP AL BACKEND
         try {
             // Usamos la API fetch nativa para hacer el POST al servidor Express
-            const response = await fetch('http://localhost:3000/api/products', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
                 method: 'POST', // Indicamos que es una inserción
                 headers: {
                     'Content-Type': 'application/json' // Le avisamos a Express que enviamos JSON
