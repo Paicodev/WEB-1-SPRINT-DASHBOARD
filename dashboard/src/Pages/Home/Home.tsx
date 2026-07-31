@@ -1,7 +1,7 @@
 import DashboardCard from '../../Components/Organisms/DashboardCard';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import './home.css';
+import './Home.css';
 
 const Home = () => {
 
