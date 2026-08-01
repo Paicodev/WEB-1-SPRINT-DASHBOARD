@@ -10,7 +10,8 @@ const Home = () => {
 
     const [stats, setStats] = useState({
         totalProducts: 0,
-        totalCategories: 0
+        totalCategories: 0,
+        totalUsers: 0
     });
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -55,8 +56,18 @@ const Home = () => {
                     title="Categorías"
                     count={stats.totalCategories}
                     listPath="/categories"
-                    newPath="/categories/new" //TODO Ruta a crear en App.tsx
+                    newPath="/categories/new"
                     newButtonText="Agregar Categoría"
+                />
+                {/* Tarjeta de métrica de usuarios registrados */}
+                <DashboardCard
+                    icon="👥"
+                    title="Usuarios"
+                    count={stats.totalUsers}
+                    listPath="/users"
+                    newPath="/users"
+                    listButtonText="Ver Usuarios"
+                    newButtonText="Listado"
                 />
             </section>
         </div>

@@ -8,7 +8,9 @@ import Layout from './Components/Organisms/Layout';
 import NewProduct from './Pages/Products/NewProduct';
 import CategoriesList from "./Pages/Categories/CategoriesList";
 import CategoryView from "./Pages/Categories/CategoryView";
-import NewCategory from "./Pages/Categories/NewCategory";
+// Módulo de Usuarios
+import UsersList from "./Pages/Users/UsersList";
+import NewCategory from './Pages/Categories/NewCategory';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
       <Route path="/categories/new" element={<NewCategory />} />
       <Route path="/categories/:id" element={<CategoryView />} />
 
+      {/* Ruta para el listado de usuarios registrados */}
+      <Route path="/users" element={<UsersList />} />
       <Route path="/profile" element={<Profile />} />
 
       {/* Ruta por default para el Error 404 */}

@@ -23,9 +23,7 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
     return(
       <div className="layout-container">
         
-        {/* ==========================================
-           Fondo oscuro para cerrar al clickear fuera del sidebar en móviles
-            ========================================== */}
+        {/* Fondo oscuro para cerrar al clickear fuera del sidebar en móviles */}
         <div 
           className={`sidebar-overlay ${isSidebarVisibleOpen ? 'open' : ''}`} 
           onClick={closeSidebar}
@@ -53,6 +51,10 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
             </NavLink>
             <NavLink to="/categories" onClick={closeSidebar} className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏪 Categorías
+            </NavLink>
+            {/* Enlace al módulo de gestión de usuarios */}
+            <NavLink to="/users" onClick={closeSidebar} className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              👥 Usuarios
             </NavLink>
           </nav>
 
