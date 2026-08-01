@@ -22,7 +22,7 @@ export default function CategoryView() {
 
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`);
 
-                if(response.ok){
+                if (response.ok) {
 
                     const data = await response.json();
 
@@ -36,7 +36,7 @@ export default function CategoryView() {
 
                 }
 
-            } catch(error){
+            } catch (error) {
 
                 console.error(error);
 
@@ -65,28 +65,28 @@ export default function CategoryView() {
 
     const handleGuardar = async () => {
 
-        if(editForm.name.trim() === ""){
+        if (editForm.name.trim() === "") {
 
             alert("Debe ingresar un nombre.");
             return;
 
         }
 
-        try{
+        try {
 
-            const response = await fetch(`http://localhost:3000/api/categories/${id}`,{
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`, {
 
-                method:"PUT",
+                method: "PUT",
 
-                headers:{
-                    "Content-Type":"application/json"
+                headers: {
+                    "Content-Type": "application/json"
                 },
 
-                body:JSON.stringify(editForm)
+                body: JSON.stringify(editForm)
 
             });
 
-            if(response.ok){
+            if (response.ok) {
 
                 const updatedCategory = await response.json();
 
@@ -95,13 +95,13 @@ export default function CategoryView() {
 
                 alert("Categoría actualizada.");
 
-            }else{
+            } else {
 
                 alert("No se pudo actualizar.");
 
             }
 
-        }catch(error){
+        } catch (error) {
 
             console.error(error);
             alert("Error de conexión.");
@@ -112,30 +112,30 @@ export default function CategoryView() {
 
     const handleEliminar = async () => {
 
-        if(!window.confirm("¿Eliminar esta categoría?")){
+        if (!window.confirm("¿Eliminar esta categoría?")) {
             return;
         }
 
-        try{
+        try {
 
-            const response = await fetch(`http://localhost:3000/api/categories/${id}`,{
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`, {
 
-                method:"DELETE"
+                method: "DELETE"
 
             });
 
-            if(response.ok){
+            if (response.ok) {
 
                 alert("Categoría eliminada.");
                 navigate("/categories");
 
-            }else{
+            } else {
 
                 alert("No se pudo eliminar.");
 
             }
 
-        }catch(error){
+        } catch (error) {
 
             console.error(error);
             alert("Error de conexión.");

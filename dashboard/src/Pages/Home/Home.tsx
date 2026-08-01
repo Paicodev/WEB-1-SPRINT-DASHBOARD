@@ -9,28 +9,30 @@ const Home = () => {
     const userName = "Geronimo";
 
     const [stats, setStats] = useState({
-    totalProducts: 0,
-    totalCategories: 0
+        totalProducts: 0,
+        totalCategories: 0
     });
-    
+
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
     useEffect(() => {
-    const fetchStats = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stats`);
+        const fetchStats = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/stats`);
 
-            if (!response.ok) {
-                throw new Error("No se pudieron obtener las estadísticas.");
+                if (!response.ok) {
+                    throw new Error("No se pudieron obtener las estadísticas.");
+                }
+
+                const data = await response.json();
+                setStats(data);
+            } catch (error) {
+                console.error("Error al cargar las estadísticas:", error);
             }
+        };
 
-            const data = await response.json();
-            setStats(data);
-        } catch (error) {
-            console.error("Error al cargar las estadísticas:", error);
-        }
-    };
-
-    fetchStats();
-}, []);
+        fetchStats();
+    }, []);
 
     return (
         <div className="home-container">
@@ -40,7 +42,7 @@ const Home = () => {
             </header>
 
             <section className="dashboard-grid">
-                <DashboardCard 
+                <DashboardCard
                     icon="📦"
                     title="Productos"
                     count={stats.totalProducts}
@@ -48,7 +50,7 @@ const Home = () => {
                     newPath="/products/new"
                     newButtonText="Agregar Producto"
                 />
-                <DashboardCard 
+                <DashboardCard
                     icon="🏪"
                     title="Categorías"
                     count={stats.totalCategories}

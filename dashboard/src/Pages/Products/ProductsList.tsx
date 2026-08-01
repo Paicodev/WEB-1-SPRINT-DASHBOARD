@@ -10,6 +10,7 @@ interface Product {
   category: string;
   price: number;
   stock: number;
+  image?: string;
   imageUrl: string;
 }
 
@@ -20,14 +21,17 @@ const ProductsList: React.FC = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const navigate = useNavigate();
 
+  // Definir API URL con fallback seguro
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        
+
         // Petición GET al endpoint principal de productos en el backend
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
-        
+        const response = await fetch(`${API_URL}/api/products`);
+
         if (response.ok) {
           // Si Express responde con un status 200, parseamos el JSON
           const data = await response.json();
@@ -39,7 +43,7 @@ const ProductsList: React.FC = () => {
         console.error("Error de red al intentar conectar con el backend:", error);
       } finally {
         // Independientemente de si falla o tiene éxito, quitamos el loader
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -91,7 +95,7 @@ const ProductsList: React.FC = () => {
               {filteredProducts.map((product) => (
                 <tr key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
                   <td className="cell-image">
-                    <ImageWithLoader src={product.imageUrl} alt={product.name} className="product-image" />
+                    <ImageWithLoader src={product.image || product.imageUrl || ''} alt={product.name} className="product-image" />
                   </td>
                   <td>{product.id}</td>
                   <td>{product.name}</td>
@@ -104,9 +108,9 @@ const ProductsList: React.FC = () => {
           </table>
         )}
         {!loading && filteredProducts.length === 0 && (
-            <div className="no-results-message">
-                No se encontraron productos que coincidan con la búsqueda.
-            </div>
+          <div className="no-results-message">
+            No se encontraron productos que coincidan con la búsqueda.
+          </div>
         )}
       </div>
     </div>
