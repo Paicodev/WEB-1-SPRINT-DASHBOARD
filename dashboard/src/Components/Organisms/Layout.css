@@ -126,6 +126,22 @@
 
 .mobile-menu-btn {
   display: none;
+  position: fixed;
+  top: 18px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: #4d4646;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all .3s ease;
+  z-index: 1100;
+
+  justify-content: center;
+  align-items: center;
 }
 
 /* =========================================
@@ -134,8 +150,10 @@
 @media (max-width: 1024px) {
   .sidebar {
     position: fixed;
+    left: 0;
+    top: 0;
     transform: translateX(-100%);
-  }
+}
 
   .sidebar.open {
     transform: translateX(0);
@@ -157,7 +175,7 @@
 .sidebar-overlay.open {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto;
+  pointer-events: all;
 }
 
   .main-area {
@@ -169,17 +187,13 @@
   }
 
   .mobile-menu-btn {
-    display: block;
-    position: absolute;
-    top: 16px;
-    left: 15px;
-    z-index: 1001;
-    background-color: transparent;
-    color: #4d4646;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
+    display: flex;
+}
+
+.mobile-menu-btn.open {
+    left: 310px;
+    background: #1ea811;
+}
   .main-content {
   padding: 1rem;
 }

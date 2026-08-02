@@ -30,8 +30,11 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
         ></div>
 
         {/* Botón Mobile */}
-        <button className="mobile-menu-btn" onClick={toggleSidebar}>
-          ☰ Menú
+        <button
+          className={`mobile-menu-btn ${isSidebarVisibleOpen ? "open" : ""}`}
+          onClick={toggleSidebar}
+        >
+          {isSidebarVisibleOpen ? "✕" : "☰"}
         </button>
 
         {/* SIDEBAR */}
