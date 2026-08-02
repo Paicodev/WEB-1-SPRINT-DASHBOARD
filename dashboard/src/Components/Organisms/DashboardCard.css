@@ -69,3 +69,12 @@
     background-color: #1a8c0f; /* Verde más oscuro al pasar el mouse */
 }
 
+@media (max-width: 640px) {
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .card-button {
+    width: 100%;
+  }
+}

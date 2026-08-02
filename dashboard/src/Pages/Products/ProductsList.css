@@ -161,4 +161,30 @@
     .products-list-header.search-active .add-button {
         display: none; /* Ocultamos el título y el botón */
     }
+ .products-list-container {
+    padding: 0;
+  }
+
+  .products-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    width: 100%;
+    display: flex;
+    gap: .75rem;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  .products-list-content {
+    overflow-x: auto;
+  }
+
+  .products-table {
+    min-width: 620px;
+  }   
 }

@@ -1,46 +1,190 @@
 .products-list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ocupa toda la altura del main-content */
 }
 
 .products-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    /* Este encabezado no se queda fijo, ya que el header principal sí lo hace.
+       Se mantiene la estructura del diseño. */
 }
 
 .header-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 .header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .search-input {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-  min-width: 250px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    width: 250px;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-input:focus {
-  border-color: #007bff;
+    outline: none;
+    border-color: #1ea811;
+    box-shadow: 0 0 0 2px rgba(30, 168, 17, 0.2);
+}
+
+.add-button {
+    background-color: #1ea811;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.add-button:hover {
+    background-color: #1a8c0f;
+}
+
+.add-button-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.products-list-content {
+    flex-grow: 1;
+    padding-top: 1.5rem;
+    overflow-y: auto; /* Permite scroll si la tabla es muy grande */
 }
 
 .loading-message, .no-results-message {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-  font-size: 1rem;
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+    vertical-align: middle;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.products-table th {
+    font-weight: 600;
+    color: #666;
+    background-color: #f9fafb;
+}
+
+.products-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.products-table tbody tr:hover {
+    background-color: #f6f7fb;
+}
+
+.column-image {
+    width: 80px;
+}
+
+.cell-image {
+    width: 80px;
+    padding: 0.5rem;
+}
+
+.product-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+}
+/* Estilos para la primera y última celda para bordes redondeados en la tabla */
+.products-table th:first-child,
+.products-table td:first-child {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.products-table th:last-child,
+.products-table td:last-child {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* --- BONUS: ESTILOS RESPONSIVE --- */
+@media (max-width: 768px) {
+    .products-list-header {
+        gap: 1rem;
+    }
+
+    .add-button-text {
+        display: none; /* Ocultamos el texto del botón */
+    }
+
+    .add-button {
+        width: 44px; /* Hacemos el botón cuadrado */
+        height: 44px;
+        padding: 0;
+    }
+
+    .search-input {
+        transition: width 0.3s ease-in-out;
+        width: 44px; /* Por defecto, el input es pequeño */
+    }
+
+    /* Cuando el input de búsqueda está activo */
+    .products-list-header.search-active .search-input {
+        width: 100%; /* Se expande */
+    }
+
+    .products-list-header.search-active .header-title,
+    .products-list-header.search-active .add-button {
+        display: none; /* Ocultamos el título y el botón */
+    }
+ .products-list-container {
+    padding: 0;
+  }
+
+  .products-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    width: 100%;
+    display: flex;
+    gap: .75rem;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  .products-list-content {
+    overflow-x: auto;
+  }
+
+  .products-table {
+    min-width: 620px;
+  }   
 }

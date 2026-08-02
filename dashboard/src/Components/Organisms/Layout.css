@@ -143,14 +143,22 @@
 
   /* Capa oscura que tapa el contenido cuando el menú está abierto */
   .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 999; /* Un punto menos que el sidebar */
-  }
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* Transiciones suaves para la opacidad y visibilidad */
+  transition: opacity .3s ease, visibility .3s ease;
+}
+
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
 
   .main-area {
     width: 100%;
@@ -171,5 +179,37 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+  }
+  .main-content {
+  padding: 1rem;
+}
+
+.main-header {
+  padding-right: 1rem;
+}
+
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+}
+}
+
+/* =========================================
+   RESPONSIVE (480px o menos)
+   ========================================= */
+@media (max-width: 480px) {
+  .main-header {
+    height: 64px;
+    min-height: 64px;
+    padding-left: 3.5rem;
+  }
+
+  .main-content {
+    padding: .75rem;
+  }
+
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
   }
 }

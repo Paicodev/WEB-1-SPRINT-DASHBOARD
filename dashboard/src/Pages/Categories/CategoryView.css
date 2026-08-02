@@ -262,3 +262,54 @@
 .btn-save:hover {
     background-color: #1a8c0f;
 }
+
+@media (max-width: 768px) {
+  .product-view-container {
+    padding: 1rem;
+  }
+
+  .product-view-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .summary-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .form-group {
+    max-width: 100%;
+  }
+
+  .image-controls {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    max-width: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .btn-save,
+  .btn-cancel,
+  .btn-secondary,
+  .btn-danger-pill {
+    width: 100%;
+  }
+
+  .stock-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .stock-controls input {
+    width: 100%;
+  }
+}
