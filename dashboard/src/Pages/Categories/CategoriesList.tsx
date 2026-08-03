@@ -15,13 +15,15 @@ const CategoriesList: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
 
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/categories`
+          `${API_URL}/api/categories`
         );
 
         if (response.ok) {

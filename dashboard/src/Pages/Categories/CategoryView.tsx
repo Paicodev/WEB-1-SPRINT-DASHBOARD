@@ -14,13 +14,15 @@ export default function CategoryView() {
 
     const [editForm, setEditForm] = useState(category);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
     useEffect(() => {
 
         const fetchCategory = async () => {
 
             try {
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`);
+                const response = await fetch(`${API_URL}/api/categories/${id}`);
 
                 if (response.ok) {
 
@@ -74,7 +76,7 @@ export default function CategoryView() {
 
         try {
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`, {
+            const response = await fetch(`${API_URL}/api/categories/${id}`, {
 
                 method: "PUT",
 
@@ -118,7 +120,7 @@ export default function CategoryView() {
 
         try {
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`, {
+            const response = await fetch(`${API_URL}/api/categories/${id}`, {
 
                 method: "DELETE"
 

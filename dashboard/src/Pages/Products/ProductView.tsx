@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './ProductView.css';
 
+interface ProductData {
+  id: string;
+  name: string;
+  description: string;
+  price: number | string;
+  stock: number | string;
+  store: string;
+  image: string;
+}
+
 export default function ProductView() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState<ProductData>({
     id: id || '1',
     name: 'Auriculares Negratone Pro',
     description: 'Auriculares inalámbricos con cancelación de ruido.',
@@ -17,13 +27,15 @@ export default function ProductView() {
   });
 
   // Estado borrador para el formulario (permite editar sin pisar los datos reales hasta guardar)
-  const [editForm, setEditForm] = useState(product);
+  const [editForm, setEditForm] = useState<ProductData>(product);
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchProduct = async () => {
         try {
             // Hacemos el fetch dinámico usando el ID capturado de la URL
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`);
+            const response = await fetch(`${API_URL}/api/products/${id}`);
             
             if (response.ok) {
                 const data = await response.json();
@@ -52,18 +64,31 @@ export default function ProductView() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    if (name === 'price' || name === 'stock') {
+      if (value === '' || /^\d*$/.test(value)) {
+        setEditForm({
+          ...editForm,
+          [name]: value
+        });
+      }
+      return;
+    }
+
     setEditForm({
       ...editForm,
-      [name]: name === 'price' || name === 'stock' ? Number(value) : value
+      [name]: value
     });
   };
 
   // Escenario 5: Manejador de los botones + y -
   const handleStockAdjust = (amount: number) => {
-    setEditForm(prev => ({
-      ...prev,
-      stock: Math.max(0, prev.stock + amount)
-    }));
+    setEditForm(prev => {
+      const currentStock = Number(prev.stock) || 0;
+      return {
+        ...prev,
+        stock: Math.max(0, currentStock + amount)
+      };
+    });
   };
 
   // Escenario 7: Eliminar la URL de la imagen
@@ -76,38 +101,59 @@ export default function ProductView() {
   };
 
   const handleGuardar = async () => {
-  if (!editForm.name.trim()) {
-    alert("Error: El nombre es requerido.");
-    return;
-  }
-
-  if (!Number.isInteger(editForm.price) || !Number.isInteger(editForm.stock)) {
-    alert("Error: El precio y el stock deben ser enteros.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(editForm)
-    });
-
-    if (response.ok) {
-      const updatedProduct = await response.json();
-      setProduct(updatedProduct);
-      setEditForm(updatedProduct);
-      alert("¡Producto actualizado!");
-    } else {
-      alert("No se pudo actualizar el producto.");
+    if (!editForm.name.trim()) {
+      alert("Error: El nombre es requerido.");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("Error de conexión con el servidor.");
-  }
-};
+
+    const priceNum = Number(editForm.price);
+    const stockNum = Number(editForm.stock);
+
+    if (String(editForm.price).trim() === '' || isNaN(priceNum) || priceNum < 0) {
+      alert("Error: El precio debe ser un número entero válido.");
+      return;
+    }
+
+    if (String(editForm.stock).trim() === '' || isNaN(stockNum) || stockNum < 0) {
+      alert("Error: El stock debe ser un número entero válido.");
+      return;
+    }
+
+    const payload = {
+      ...editForm,
+      price: priceNum,
+      stock: stockNum
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const updatedProduct = await response.json();
+        const formatted = {
+          ...updatedProduct,
+          id: updatedProduct.id.toString(),
+          description: updatedProduct.description || 'Descripción no disponible',
+          store: 'Negratone Oficial',
+          image: updatedProduct.image || ''
+        };
+        setProduct(formatted);
+        setEditForm(formatted);
+        alert("¡Producto actualizado!");
+      } else {
+        alert("No se pudo actualizar el producto.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión con el servidor.");
+    }
+  };
 
   const handleEliminar = async () => {
   if (!window.confirm("¿Eliminar este producto permanentemente?")) {
@@ -115,7 +161,7 @@ export default function ProductView() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+    const response = await fetch(`${API_URL}/api/products/${id}`, {
       method: "DELETE"
     });
 
