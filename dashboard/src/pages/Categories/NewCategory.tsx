@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:dashboard/src/pages/Categories/NewCategory.tsx
 import React, { useState } from "react";
 import "./NewCategory.css";
 
@@ -114,3 +115,92 @@ export default function NewCategory() {
     );
 
 }
+=======
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./NewCategory.css";
+
+export default function NewCategory() {
+    const navigate = useNavigate();
+
+    const [category, setCategory] = useState({
+        name: ""
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCategory({
+            name: e.target.value
+        });
+    };
+
+    const handleCancel = () => {
+        navigate('/categories');
+    };
+
+    const handleSave = async () => {
+        if(category.name.trim() === ""){
+            alert("Debe ingresar un nombre.");
+            return;
+        }
+
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+        try{
+            const response = await fetch(`${API_URL}/api/categories`,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(category)
+            });
+
+            if(response.ok){
+                alert("Categoría creada correctamente.");
+                navigate('/categories');
+            }else{
+                alert("No se pudo crear la categoría.");
+            }
+        }catch(error){
+            console.error(error);
+            alert("Error de conexión con el backend.");
+        }
+    };
+
+    return(
+        <div className="new-product-container">
+            <h2>Dar de alta una nueva categoría</h2>
+
+            <form onSubmit={(e) => e.preventDefault()}>
+                <div className="form-group">
+                    <label>Nombre de la Categoría</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={category.name}
+                        onChange={handleChange}
+                        placeholder="Ej: Accesorios"
+                    />
+                </div>
+
+                <div className="form-actions">
+                    <button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleCancel}
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        className="btn-save"
+                        onClick={handleSave}
+                    >
+                        Guardar Categoría
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+}
+>>>>>>> Stashed changes:dashboard/src/Pages/Categories/NewCategory.tsx
