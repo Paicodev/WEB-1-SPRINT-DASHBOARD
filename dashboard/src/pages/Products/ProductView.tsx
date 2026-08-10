@@ -2,9 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './ProductView.css';
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 export default function ProductView() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [imageInputMode, setImageInputMode] = useState<'file' | 'url'>('file');
 
   const [product, setProduct] = useState({
     id: id || '1',
@@ -12,63 +22,103 @@ export default function ProductView() {
     description: 'Auriculares inalámbricos con cancelación de ruido.',
     price: 45000,
     stock: 15,
+    category_id: '' as string | number,
     store: 'Negratone Oficial',
     image: '/img/products/producto-auris.jpg'
   });
 
-  // Estado borrador para el formulario (permite editar sin pisar los datos reales hasta guardar)
+  // Estado borrador para el formulario
   const [editForm, setEditForm] = useState(product);
 
+  // 1. Cargar las categorías del Backend
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/categories`);
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [API_URL]);
+
+  // 2. Cargar los datos del producto actual
   useEffect(() => {
     const fetchProduct = async () => {
-        try {
-            // Hacemos el fetch dinámico usando el ID capturado de la URL
-            const response = await fetch(`http://localhost:3000/api/products/${id}`);
-            
-            if (response.ok) {
-                const data = await response.json();
-                
-                // Mapeamos los campos que vienen de tu BD
-                const productData = {
-                    id: data.id.toString(),
-                    name: data.name,
-                    description: data.description || 'Descripción no disponible',
-                    price: data.price,
-                    stock: data.stock,
-                    store: 'Negratone Oficial', // O el campo de tienda que tengas en BD
-                    image: data.image || ''
-                };
+      try {
+        const response = await fetch(`${API_URL}/api/products/${id}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          const productData = {
+            id: data.id.toString(),
+            name: data.name || '',
+            description: data.description || '',
+            price: Number(data.price) || 0,
+            stock: Number(data.stock) || 0,
+            category_id: data.category_id || '',
+            store: data.store || 'Negratone Oficial',
+            image: data.image || ''
+          };
 
-                setProduct(productData);
-                setEditForm(productData);
-            }
-        } catch (error) {
-            console.error("Error de conexión:", error);
+          setProduct(productData);
+          setEditForm(productData);
         }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+      }
     };
 
     fetchProduct();
-}, [id]); // Esto asegura que si cambias de producto, se vuelva a pedir al servidor
+  }, [id, API_URL]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditForm({
-      ...editForm,
-      [name]: name === 'price' || name === 'stock' ? Number(value) : value
-    });
-  };
-
-  // Escenario 5: Manejador de los botones + y -
-  const handleStockAdjust = (amount: number) => {
     setEditForm(prev => ({
       ...prev,
-      stock: Math.max(0, prev.stock + amount)
+      [name]: name === 'price' || name === 'stock' ? (value === '' ? '' : Number(value)) : value
     }));
   };
 
-  // Escenario 7: Eliminar la URL de la imagen
+  // Manejador para carga de archivo de imagen local (File Picker)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("La imagen es demasiado pesada. El tamaño máximo permitido es 5MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setEditForm(prev => ({
+            ...prev,
+            image: reader.result as string
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Manejador de los botones + y - para stock
+  const handleStockAdjust = (amount: number) => {
+    setEditForm(prev => ({
+      ...prev,
+      stock: Math.max(0, Number(prev.stock || 0) + amount)
+    }));
+  };
+
+  // Limpiar / Eliminar imagen seleccionada
   const handleRemoveImage = () => {
-    setEditForm({ ...editForm, image: '' });
+    setEditForm(prev => ({ ...prev, image: '' }));
   };
 
   const handleCancelar = () => {
@@ -76,60 +126,80 @@ export default function ProductView() {
   };
 
   const handleGuardar = async () => {
-  if (!editForm.name.trim()) {
-    alert("Error: El nombre es requerido.");
-    return;
-  }
-
-  if (!Number.isInteger(editForm.price) || !Number.isInteger(editForm.stock)) {
-    alert("Error: El precio y el stock deben ser enteros.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(editForm)
-    });
-
-    if (response.ok) {
-      const updatedProduct = await response.json();
-      setProduct(updatedProduct);
-      setEditForm(updatedProduct);
-      alert("¡Producto actualizado!");
-    } else {
-      alert("No se pudo actualizar el producto.");
+    if (!editForm.name.trim()) {
+      alert("Error: El nombre es requerido.");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("Error de conexión con el servidor.");
-  }
-};
+
+    const priceNum = Number(editForm.price);
+    const stockNum = Number(editForm.stock);
+
+    if (editForm.price === '' || isNaN(priceNum) || priceNum < 0) {
+      alert("Error: El precio debe ser un número mayor o igual a 0.");
+      return;
+    }
+
+    if (editForm.stock === '' || isNaN(stockNum) || stockNum < 0) {
+      alert("Error: El stock debe ser un número mayor o igual a 0.");
+      return;
+    }
+
+    const payload = {
+      ...editForm,
+      price: priceNum,
+      stock: stockNum,
+      category_id: editForm.category_id ? Number(editForm.category_id) : null
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const updatedProduct = await response.json();
+        const formatted = {
+          ...updatedProduct,
+          id: updatedProduct.id.toString(),
+          category_id: updatedProduct.category_id || ''
+        };
+        setProduct(formatted);
+        setEditForm(formatted);
+        alert("¡Producto actualizado con éxito!");
+      } else {
+        alert("No se pudo actualizar el producto en el servidor.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión con el servidor.");
+    }
+  };
 
   const handleEliminar = async () => {
-  if (!window.confirm("¿Eliminar este producto permanentemente?")) {
-    return;
-  }
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/products/${id}`, {
-      method: "DELETE"
-    });
-
-    if (response.ok) {
-      alert("¡Producto eliminado!");
-      navigate("/products");
-    } else {
-      alert("No se pudo eliminar el producto.");
+    if (!window.confirm("¿Eliminar este producto permanentemente?")) {
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("Error de conexión con el servidor.");
-  }
-};
+
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: "DELETE"
+      });
+
+      if (response.ok) {
+        alert("¡Producto eliminado correctamente!");
+        navigate("/products");
+      } else {
+        alert("No se pudo eliminar el producto.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión con el servidor.");
+    }
+  };
 
   return (
     <div className="product-view-container">
@@ -137,34 +207,34 @@ export default function ProductView() {
       {/* HEADER */}
       <div className="product-view-header">
         <h2><Link to="/products">Productos</Link> &gt; #{product.id}</h2>
-        <button className="btn-danger-pill" onClick={handleEliminar}>Eliminar</button>
+        <button className="btn-danger-pill" onClick={handleEliminar}>Eliminar Producto</button>
       </div>
 
-      {/*  TARJETAS DE RESUMEN */}
+      {/* TARJETA DE RESUMEN */}
       <div className="summary-card">
         <img 
-          src={product.image || 'https://placehold.co/100x100/333/white?text=Img'} 
+          src={editForm.image || product.image || 'https://placehold.co/100x100/333/white?text=Img'} 
           alt={product.name} 
           className="summary-image"
         />
         
         <div className="summary-details">
-          <h3>{product.name}</h3>
+          <h3>{editForm.name || product.name}</h3>
           
           <div className="summary-stats">
             <div className="stat-item">
-              <span className="stat-value">{product.price}</span>
-              <span className="stat-label">PUNTOS<br/>SUPERCLUB</span>
+              <span className="stat-value">${editForm.price}</span>
+              <span className="stat-label">PRECIO<br/>VENTA</span>
             </div>
             
             <div className="stat-item">
-              <span className="stat-value">{product.stock}</span>
+              <span className="stat-value">{editForm.stock}</span>
               <span className="stat-label">STOCK<br/>DISPONIBLE</span>
             </div>
 
             <Link to="/" className="store-pill">
               <span className="store-avatar">🟢</span>
-              {product.store}
+              {editForm.store || product.store}
             </Link>
           </div>
         </div>
@@ -172,20 +242,36 @@ export default function ProductView() {
 
       {/* FORMULARIO DE EDICIÓN */}
       <div className="product-form-container">
-        <h3>Información</h3>
+        <h3>Editar Información</h3>
         
         <div className="form-group">
-          <label>Nombre</label>
+          <label>Nombre del Producto *</label>
           <input type="text" name="name" value={editForm.name} onChange={handleInputChange} />
         </div>
 
         <div className="form-group">
-          <label>Valor</label>
+          <label>Categoría</label>
+          <select 
+            name="category_id" 
+            value={editForm.category_id} 
+            onChange={handleInputChange}
+          >
+            <option value="">Sin categoría asignada</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Precio ($) *</label>
           <input type="number" name="price" value={editForm.price} onChange={handleInputChange} />
         </div>
 
         <div className="form-group">
-          <label>Stock</label>
+          <label>Stock *</label>
           <div className="stock-controls">
             <button type="button" onClick={() => handleStockAdjust(-1)}>-</button>
             <input type="number" name="stock" value={editForm.stock} onChange={handleInputChange} />
@@ -195,7 +281,7 @@ export default function ProductView() {
 
         <div className="form-group">
           <label>Descripción</label>
-          <textarea name="description" value={editForm.description} onChange={handleInputChange} rows={4} />
+          <textarea name="description" value={editForm.description} onChange={handleInputChange} rows={3} />
         </div>
 
         <div className="form-group">
@@ -207,20 +293,72 @@ export default function ProductView() {
           </select>
         </div>
 
-        <h3 style={{ marginTop: '2rem' }}>Galería de Imágenes</h3>
+        {/* GESTIÓN DE IMAGEN DUAL (ARCHIVO LOCAL VS URL) */}
+        <h3 style={{ marginTop: '2rem' }}>Imagen del Producto</h3>
         
-        <div className="form-group">
-          <label>Nueva Imagen</label>
-          <div className="image-controls">
-            <input type="text" name="image" value={editForm.image} onChange={handleInputChange} placeholder="URL de la Imagen" />
-            <button type="button" className="btn-secondary" onClick={handleRemoveImage}>Eliminar Imagen</button>
+        <div className="form-group image-upload-box">
+          <div className="image-mode-tabs">
+            <button 
+              type="button" 
+              className={`mode-tab-btn ${imageInputMode === 'file' ? 'active' : ''}`}
+              onClick={() => setImageInputMode('file')}
+            >
+              📁 Subir desde Archivo Local
+            </button>
+            <button 
+              type="button" 
+              className={`mode-tab-btn ${imageInputMode === 'url' ? 'active' : ''}`}
+              onClick={() => setImageInputMode('url')}
+            >
+              🔗 Ingresar URL de Imagen
+            </button>
           </div>
+
+          {imageInputMode === 'file' ? (
+            <div className="file-input-wrapper">
+              <input 
+                type="file" 
+                id="edit-product-file" 
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden-file-input"
+              />
+              <label htmlFor="edit-product-file" className="custom-file-btn">
+                <span>📷 Seleccionar Foto de la Computadora</span>
+              </label>
+            </div>
+          ) : (
+            <input 
+              type="text" 
+              name="image" 
+              value={editForm.image} 
+              onChange={handleInputChange} 
+              placeholder="https://ejemplo.com/imagen.jpg" 
+            />
+          )}
+
+          {/* Previsualización en vivo */}
+          {editForm.image ? (
+            <div className="image-preview-card">
+              <img src={editForm.image} alt="Vista previa de edición" className="preview-img" />
+              <div className="preview-info">
+                <span className="preview-label">✅ Imagen cargada</span>
+                <button type="button" className="btn-remove-preview" onClick={handleRemoveImage}>
+                  🗑️ Quitar Imagen
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="no-image-placeholder">
+              <span>🖼️ Sin imagen cargada actualmente</span>
+            </div>
+          )}
         </div>
 
-        {/* BOTONES DE ACCION*/}
+        {/* BOTONES DE ACCIÓN */}
         <div className="form-actions">
-          <button type="button" className="btn-cancel" onClick={handleCancelar}>Cancelar</button>
-          <button type="button" className="btn-save" onClick={handleGuardar}>Guardar Cambios</button>
+          <button type="button" className="btn-cancel" onClick={handleCancelar}>Restablecer</button>
+          <button type="button" className="btn-save" onClick={handleGuardar}>💾 Guardar Cambios</button>
         </div>
 
       </div>
