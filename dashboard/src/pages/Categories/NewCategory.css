@@ -1,7 +1,7 @@
 /* =========================================
-   VISTA Y EDICIÓN DE CATEGORÍA - ESTILOS
+   ALTA DE CATEGORÍA - ESTILOS
    ========================================= */
-.category-view-container {
+.new-category-container {
     padding: 2rem;
     max-width: 850px;
     background-color: var(--bg-card, #ffffff);
@@ -10,41 +10,38 @@
     margin: 0 auto;
 }
 
-.category-view-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.new-category-header {
+    margin-bottom: 2rem;
     border-bottom: 1px solid var(--border-color, #e5e7eb);
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
-.category-view-header h2 {
+.new-category-header h2 {
     font-size: 1.6rem;
     font-weight: 600;
     color: var(--text-heading, #2d2929);
     margin: 0;
 }
 
-.category-form {
+.new-category-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.category-form .form-group {
+.new-category-form .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.category-form label {
+.new-category-form label {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-color, #4d4646);
 }
 
-.category-form input {
+.new-category-form input {
     padding: 0.75rem 1rem;
     border: 1px solid var(--input-border, #d1d5db);
     border-radius: 0.5rem;
@@ -55,7 +52,7 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.category-form input:focus {
+.new-category-form input:focus {
     outline: none;
     border-color: var(--primary-brand, #1ea811);
     box-shadow: 0 0 0 3px rgba(30, 168, 17, 0.15);
@@ -98,21 +95,4 @@
 
 .btn-save:hover {
     background-color: var(--primary-brand-dark, #1a6813);
-}
-
-.btn-danger-pill {
-    background-color: transparent;
-    color: #ef4444;
-    border: 1px solid #ef4444;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-}
-
-.btn-danger-pill:hover {
-    background-color: #ef4444;
-    color: #ffffff;
 }

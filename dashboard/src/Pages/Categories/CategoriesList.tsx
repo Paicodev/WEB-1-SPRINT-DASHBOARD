@@ -22,9 +22,7 @@ const CategoriesList: React.FC = () => {
       try {
         setLoading(true);
 
-        const response = await fetch(
-          `${API_URL}/api/categories`
-        );
+        const response = await fetch(`${API_URL}/api/categories`);
 
         if (response.ok) {
           const data = await response.json();

@@ -1,7 +1,7 @@
 /* =========================================
-   VISTA Y EDICIÓN DE PRODUCTO - ESTILOS
+   NUEVO PRODUCTO - ESTILOS
    ========================================= */
-.product-view-container {
+.new-product-container {
     padding: 2rem;
     max-width: 850px;
     background-color: var(--bg-card, #ffffff);
@@ -10,29 +10,13 @@
     margin: 0 auto;
 }
 
-.product-view-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.new-product-header {
+    margin-bottom: 2rem;
     border-bottom: 1px solid var(--border-color, #e5e7eb);
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
-.back-link {
-    font-size: 0.85rem;
-    color: var(--primary-brand, #1ea811);
-    text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 0.35rem;
-    display: inline-block;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
-
-.product-view-header h2 {
+.new-product-header h2 {
     font-size: 1.6rem;
     font-weight: 600;
     color: var(--text-heading, #2d2929);
@@ -42,97 +26,10 @@
 .subtitle-text {
     font-size: 0.95rem;
     color: var(--text-muted, #6b7280);
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
 }
 
-.btn-danger-pill {
-    background-color: transparent;
-    color: #ef4444;
-    border: 1px solid #ef4444;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-}
-
-.btn-danger-pill:hover {
-    background-color: #ef4444;
-    color: #ffffff;
-}
-
-/* =========================================
-   TARJETA DE RESUMEN
-   ========================================= */
-.summary-card {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.25rem;
-    background-color: var(--bg-body, #f8fafc);
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-color, #e5e7eb);
-    margin-bottom: 2rem;
-}
-
-.summary-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 0.5rem;
-    object-fit: cover;
-    border: 1px solid var(--border-color, #e5e7eb);
-    background-color: #ffffff;
-}
-
-.summary-details h3 {
-    margin: 0 0 0.6rem 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-heading, #2d2929);
-}
-
-.summary-stats {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.stat-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-heading, #2d2929);
-}
-
-.stat-label {
-    font-size: 0.65rem;
-    color: var(--text-muted, #6b7280);
-    line-height: 1.2;
-    font-weight: 600;
-}
-
-.store-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background-color: var(--btn-secondary-bg, #e5e7eb);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    color: var(--text-color, #4d4646);
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-/* =========================================
-   FORMULARIO Y GRID
-   ========================================= */
-.product-edit-form {
+.new-product-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -181,41 +78,8 @@
     box-shadow: 0 0 0 3px rgba(30, 168, 17, 0.15);
 }
 
-/* Control de Stock con Botones +/- */
-.stock-controls {
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--input-border, #d1d5db);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background-color: var(--input-bg, #ffffff);
-}
-
-.stock-controls button {
-    background-color: var(--btn-secondary-bg, #f3f4f6);
-    border: none;
-    padding: 0.75rem 1.25rem;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--text-color, #4d4646);
-    transition: background-color 0.2s;
-}
-
-.stock-controls button:hover {
-    background-color: var(--btn-secondary-hover, #e5e7eb);
-}
-
-.stock-controls input {
-    border: none !important;
-    text-align: center;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    width: 100%;
-}
-
 /* =========================================
-   SECCIÓN DE CARGA DE IMAGEN
+   SECCIÓN DE CARGA DE IMAGEN Y PESTAÑAS
    ========================================= */
 .image-upload-section {
     background-color: var(--bg-body, #f9fafb);
@@ -272,6 +136,7 @@
     background-color: rgba(30, 168, 17, 0.1);
 }
 
+/* Previsualización de Imagen */
 .image-preview-card {
     display: flex;
     align-items: center;
@@ -329,7 +194,7 @@
 }
 
 /* =========================================
-   BOTONES DE ACCIÓN
+   BOTONES DE ACCIÓN DEL FORMULARIO
    ========================================= */
 .form-actions {
     display: flex;

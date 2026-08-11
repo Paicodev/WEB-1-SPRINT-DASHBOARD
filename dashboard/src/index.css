@@ -9,6 +9,49 @@
     unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
+/* =========================================
+   VARIABLES DE COLOR Y TEMAS
+   ========================================= */
+:root {
+  --bg-body: #f6f7fb;
+  --bg-card: #ffffff;
+  --header-bg: #ffffff;
+  --sidebar-bg: #4d4646;
+  --text-color: #4d4646;
+  --text-heading: #2d2929;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --table-header-bg: #f9fafb;
+  --table-row-hover: #f3f4f6;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --btn-secondary-bg: #f3f4f6;
+  --btn-secondary-hover: #e5e7eb;
+  --primary-brand: #1ea811;
+  --primary-brand-dark: #1a6813;
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"], body.dark-theme {
+  --bg-body: #111827;
+  --bg-card: #1f2937;
+  --header-bg: #1f2937;
+  --sidebar-bg: #111827;
+  --text-color: #f3f4f6;
+  --text-heading: #ffffff;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --table-header-bg: #182234;
+  --table-row-hover: #2d3748;
+  --input-bg: #111827;
+  --input-border: #4b5563;
+  --btn-secondary-bg: #374151;
+  --btn-secondary-hover: #4b5563;
+  --primary-brand: #22c55e;
+  --primary-brand-dark: #16a34a;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
 /* Reseteo básico y aplicación de la tipografía a todo el proyecto */
 * {
   margin: 0;
@@ -18,19 +61,158 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f6f7fb; /* Un fondo gris clarito para que resalte el panel blanco */
-  color: #4d4646;
+  background-color: var(--bg-body);
+  color: var(--text-color);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Botón activo */
+/* =========================================
+   ESTILOS GENERALES Y ADAPTACIÓN A MODO OSCURO
+   ========================================= */
+
+/* Sidebar y Header */
+.sidebar {
+  background-color: var(--sidebar-bg) !important;
+  border-right: 1px solid var(--border-color);
+}
+
+.main-header {
+  background-color: var(--header-bg) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.header-title-text {
+  color: var(--text-heading) !important;
+}
+
+/* Tarjetas y Contenedores */
+.dashboard-card,
+.summary-card,
+.product-form-container,
+.new-product-container,
+.category-view-container,
+.profile-card,
+.category-card {
+  background-color: var(--bg-card) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+.card-title,
+.home-header h1,
+.header-title,
+.product-view-header h2,
+.new-product-container h2,
+.summary-details h3,
+.category-view-header h2 {
+  color: var(--text-heading) !important;
+}
+
+.card-count,
+.home-header p,
+.stat-label,
+.loading-message,
+.no-results-message {
+  color: var(--text-muted) !important;
+}
+
+/* Tablas */
+.products-table,
+.users-table,
+.categories-table,
+table {
+  background-color: var(--bg-card) !important;
+  color: var(--text-color) !important;
+}
+
+.products-table th,
+.users-table th,
+.categories-table th,
+thead th {
+  background-color: var(--table-header-bg) !important;
+  color: var(--text-heading) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.products-table td,
+.users-table td,
+.categories-table td,
+tbody td {
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.products-table tbody tr:hover,
+.users-table tbody tr:hover,
+.categories-table tbody tr:hover,
+tbody tr:hover {
+  background-color: var(--table-row-hover) !important;
+}
+
+/* Inputs, Selects y Textareas */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+.search-input,
+select,
+textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--input-border) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-brand) !important;
+  outline: none;
+}
+
+/* Botones y Pills */
+.card-button {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.card-button.primary,
+.add-button,
+.btn-save,
+.btn-primary {
+  background-color: var(--primary-brand) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.btn-secondary,
+.btn-cancel,
+.btn-danger-pill,
+.stock-controls button {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.store-pill {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--text-color) !important;
+}
+
+.stat-value {
+  color: var(--text-heading) !important;
+}
+
+/* Botón activo del menú */
 .nav-item.active {
-  background-color: #1ea811; 
+  background-color: var(--primary-brand) !important;
   font-weight: bold;
+  color: #ffffff !important;
 }
 
 .profile-item.active {
-  background-color: #1a6813; /* Un verde un poco más oscuro para diferenciar cuando estás en el perfil */
+  background-color: var(--primary-brand-dark) !important;
   font-weight: bold;
+  color: #ffffff !important;
 }
 
 /* =========================================
@@ -43,14 +225,13 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* Un fondo oscuro transparente */
-  z-index: 999; /* Justo debajo del sidebar que tiene 1000 */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 @media (max-width: 1024px) {
-  /* Solo se muestra si tiene la clase open */
   .sidebar-overlay.open {
     display: block;
     opacity: 1;
