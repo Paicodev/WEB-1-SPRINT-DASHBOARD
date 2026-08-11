@@ -1,0 +1,98 @@
+/* =========================================
+   ALTA DE CATEGORÍA - ESTILOS
+   ========================================= */
+.new-category-container {
+    padding: 2rem;
+    max-width: 850px;
+    background-color: var(--bg-card, #ffffff);
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 0 auto;
+}
+
+.new-category-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    padding-bottom: 1rem;
+}
+
+.new-category-header h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-heading, #2d2929);
+    margin: 0;
+}
+
+.new-category-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.new-category-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.new-category-form label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color, #4d4646);
+}
+
+.new-category-form input {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--input-border, #d1d5db);
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background-color: var(--input-bg, #ffffff);
+    color: var(--text-color, #333333);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.new-category-form input:focus {
+    outline: none;
+    border-color: var(--primary-brand, #1ea811);
+    box-shadow: 0 0 0 3px rgba(30, 168, 17, 0.15);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.btn-cancel {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color, #d1d5db);
+    background-color: var(--btn-secondary-bg, #f3f4f6);
+    color: var(--text-color, #4d4646);
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: var(--btn-secondary-hover, #e5e7eb);
+}
+
+.btn-save {
+    padding: 0.75rem 1.75rem;
+    background-color: var(--primary-brand, #1ea811);
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-save:hover {
+    background-color: var(--primary-brand-dark, #1a6813);
+}

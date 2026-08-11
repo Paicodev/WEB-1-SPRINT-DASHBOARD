@@ -15,8 +15,6 @@ export default function CategoryView() {
 
     const [editForm, setEditForm] = useState(category);
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
     useEffect(() => {
         const fetchCategory = async () => {
             try {
