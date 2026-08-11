@@ -20,8 +20,8 @@ export default function ProductView() {
     id: id || '1',
     name: 'Auriculares Negratone Pro',
     description: 'Auriculares inalámbricos con cancelación de ruido.',
-    price: 45000,
-    stock: 15,
+    price: 45000 as string | number,
+    stock: 15 as string | number,
     category_id: '' as string | number,
     store: 'Negratone Oficial',
     image: '/img/products/producto-auris.jpg'
@@ -52,10 +52,10 @@ export default function ProductView() {
     const fetchProduct = async () => {
       try {
         const response = await fetch(`${API_URL}/api/products/${id}`);
-        
+
         if (response.ok) {
           const data = await response.json();
-          
+
           const productData = {
             id: data.id.toString(),
             name: data.name || '',
@@ -134,12 +134,12 @@ export default function ProductView() {
     const priceNum = Number(editForm.price);
     const stockNum = Number(editForm.stock);
 
-    if (editForm.price === '' || isNaN(priceNum) || priceNum < 0) {
+    if (String(editForm.price).trim() === '' || isNaN(priceNum) || priceNum < 0) {
       alert("Error: El precio debe ser un número mayor o igual a 0.");
       return;
     }
 
-    if (editForm.stock === '' || isNaN(stockNum) || stockNum < 0) {
+    if (String(editForm.stock).trim() === '' || isNaN(stockNum) || stockNum < 0) {
       alert("Error: El stock debe ser un número mayor o igual a 0.");
       return;
     }
@@ -201,167 +201,192 @@ export default function ProductView() {
     }
   };
 
+  // Helper para preview
+  const getDisplayImage = () => {
+    const img = editForm.image || product.image;
+    if (!img) return 'https://placehold.co/100x100/2d3748/ffffff?text=Prod';
+    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) return img;
+    return `${API_URL}${img.startsWith('/') ? '' : '/'}${img}`;
+  };
+
   return (
     <div className="product-view-container">
-      
+
       {/* HEADER */}
       <div className="product-view-header">
-        <h2><Link to="/products">Productos</Link> &gt; #{product.id}</h2>
-        <button className="btn-danger-pill" onClick={handleEliminar}>Eliminar Producto</button>
+        <div>
+          <Link to="/products" className="back-link">← Volver a Productos</Link>
+          <h2>Modificar Producto #{product.id}</h2>
+          <p className="subtitle-text">Edita los datos y actualiza el stock o imagen del catálogo.</p>
+        </div>
+        <button type="button" className="btn-danger-pill" onClick={handleEliminar}>
+          🗑️ Eliminar
+        </button>
       </div>
 
-      {/* TARJETA DE RESUMEN */}
+      {/* TARJETA DE RESUMEN SUPERIOR */}
       <div className="summary-card">
-        <img 
-          src={editForm.image || product.image || 'https://placehold.co/100x100/333/white?text=Img'} 
-          alt={product.name} 
+        <img
+          src={getDisplayImage()}
+          alt={editForm.name || product.name}
           className="summary-image"
         />
-        
+
         <div className="summary-details">
           <h3>{editForm.name || product.name}</h3>
-          
+
           <div className="summary-stats">
             <div className="stat-item">
               <span className="stat-value">${editForm.price}</span>
-              <span className="stat-label">PRECIO<br/>VENTA</span>
-            </div>
-            
-            <div className="stat-item">
-              <span className="stat-value">{editForm.stock}</span>
-              <span className="stat-label">STOCK<br/>DISPONIBLE</span>
+              <span className="stat-label">PRECIO<br />VENTA</span>
             </div>
 
-            <Link to="/" className="store-pill">
-              <span className="store-avatar">🟢</span>
+            <div className="stat-item">
+              <span className="stat-value">{editForm.stock}</span>
+              <span className="stat-label">STOCK<br />DISPONIBLE</span>
+            </div>
+
+            <div className="store-pill">
+              <span className="store-avatar">🏪</span>
               {editForm.store || product.store}
-            </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* FORMULARIO DE EDICIÓN */}
-      <div className="product-form-container">
-        <h3>Editar Información</h3>
-        
-        <div className="form-group">
-          <label>Nombre del Producto *</label>
-          <input type="text" name="name" value={editForm.name} onChange={handleInputChange} />
-        </div>
+      {/* FORMULARIO DE EDICIÓN CON FORMATO NEWPRODUCT */}
+      <form onSubmit={(e) => e.preventDefault()} className="product-edit-form">
+        <div className="form-grid">
 
-        <div className="form-group">
-          <label>Categoría</label>
-          <select 
-            name="category_id" 
-            value={editForm.category_id} 
-            onChange={handleInputChange}
-          >
-            <option value="">Sin categoría asignada</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Precio ($) *</label>
-          <input type="number" name="price" value={editForm.price} onChange={handleInputChange} />
-        </div>
-
-        <div className="form-group">
-          <label>Stock *</label>
-          <div className="stock-controls">
-            <button type="button" onClick={() => handleStockAdjust(-1)}>-</button>
-            <input type="number" name="stock" value={editForm.stock} onChange={handleInputChange} />
-            <button type="button" onClick={() => handleStockAdjust(1)}>+</button>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Descripción</label>
-          <textarea name="description" value={editForm.description} onChange={handleInputChange} rows={3} />
-        </div>
-
-        <div className="form-group">
-          <label>Tienda</label>
-          <select name="store" value={editForm.store} onChange={handleInputChange}>
-            <option value="Negratone Oficial">Negratone Oficial</option>
-            <option value="Olivia Store">Olivia Store</option>
-            <option value="Havanna SL">Havanna SL</option>
-          </select>
-        </div>
-
-        {/* GESTIÓN DE IMAGEN DUAL (ARCHIVO LOCAL VS URL) */}
-        <h3 style={{ marginTop: '2rem' }}>Imagen del Producto</h3>
-        
-        <div className="form-group image-upload-box">
-          <div className="image-mode-tabs">
-            <button 
-              type="button" 
-              className={`mode-tab-btn ${imageInputMode === 'file' ? 'active' : ''}`}
-              onClick={() => setImageInputMode('file')}
-            >
-              📁 Subir desde Archivo Local
-            </button>
-            <button 
-              type="button" 
-              className={`mode-tab-btn ${imageInputMode === 'url' ? 'active' : ''}`}
-              onClick={() => setImageInputMode('url')}
-            >
-              🔗 Ingresar URL de Imagen
-            </button>
+          {/* Nombre */}
+          <div className="form-group full-width">
+            <label>Nombre del Producto *</label>
+            <input type="text" name="name" value={editForm.name} onChange={handleInputChange} required />
           </div>
 
-          {imageInputMode === 'file' ? (
-            <div className="file-input-wrapper">
-              <input 
-                type="file" 
-                id="edit-product-file" 
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden-file-input"
-              />
-              <label htmlFor="edit-product-file" className="custom-file-btn">
-                <span>📷 Seleccionar Foto de la Computadora</span>
-              </label>
+          {/* Categoría */}
+          <div className="form-group">
+            <label>Categoría</label>
+            <select
+              name="category_id"
+              value={editForm.category_id}
+              onChange={handleInputChange}
+              className="form-select"
+            >
+              <option value="">Sin categoría asignada</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Tienda */}
+          <div className="form-group">
+            <label>Tienda</label>
+            <select name="store" value={editForm.store} onChange={handleInputChange} className="form-select">
+              <option value="Negratone Oficial">Negratone Oficial</option>
+              <option value="Olivia Store">Olivia Store</option>
+              <option value="Havanna SL">Havanna SL</option>
+            </select>
+          </div>
+
+          {/* Precio */}
+          <div className="form-group">
+            <label>Precio ($) *</label>
+            <input type="number" name="price" value={editForm.price} onChange={handleInputChange} required />
+          </div>
+
+          {/* Stock */}
+          <div className="form-group">
+            <label>Stock Disponible *</label>
+            <div className="stock-controls">
+              <button type="button" onClick={() => handleStockAdjust(-1)}>-</button>
+              <input type="number" name="stock" value={editForm.stock} onChange={handleInputChange} required />
+              <button type="button" onClick={() => handleStockAdjust(1)}>+</button>
             </div>
-          ) : (
-            <input 
-              type="text" 
-              name="image" 
-              value={editForm.image} 
-              onChange={handleInputChange} 
-              placeholder="https://ejemplo.com/imagen.jpg" 
-            />
-          )}
+          </div>
 
-          {/* Previsualización en vivo */}
-          {editForm.image ? (
-            <div className="image-preview-card">
-              <img src={editForm.image} alt="Vista previa de edición" className="preview-img" />
-              <div className="preview-info">
-                <span className="preview-label">✅ Imagen cargada</span>
-                <button type="button" className="btn-remove-preview" onClick={handleRemoveImage}>
-                  🗑️ Quitar Imagen
-                </button>
+          {/* Descripción */}
+          <div className="form-group full-width">
+            <label>Descripción del Producto</label>
+            <textarea name="description" value={editForm.description} onChange={handleInputChange} rows={3} />
+          </div>
+
+          {/* GESTIÓN DE IMAGEN DUAL */}
+          <div className="form-group full-width image-upload-section">
+            <label>Imagen del Producto</label>
+
+            <div className="image-mode-tabs">
+              <button
+                type="button"
+                className={`mode-tab-btn ${imageInputMode === 'file' ? 'active' : ''}`}
+                onClick={() => setImageInputMode('file')}
+              >
+                📁 Subir desde Archivo Local
+              </button>
+              <button
+                type="button"
+                className={`mode-tab-btn ${imageInputMode === 'url' ? 'active' : ''}`}
+                onClick={() => setImageInputMode('url')}
+              >
+                🔗 Ingresar URL de Imagen
+              </button>
+            </div>
+
+            {imageInputMode === 'file' ? (
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  id="edit-product-file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden-file-input"
+                />
+                <label htmlFor="edit-product-file" className="custom-file-btn">
+                  <span>📷 Seleccionar Foto de la Computadora</span>
+                </label>
               </div>
-            </div>
-          ) : (
-            <div className="no-image-placeholder">
-              <span>🖼️ Sin imagen cargada actualmente</span>
-            </div>
-          )}
+            ) : (
+              <input
+                type="text"
+                name="image"
+                value={editForm.image}
+                onChange={handleInputChange}
+                placeholder="https://ejemplo.com/imagen.jpg"
+              />
+            )}
+
+            {/* Previsualización en vivo */}
+            {editForm.image ? (
+              <div className="image-preview-card">
+                <img src={getDisplayImage()} alt="Vista previa" className="preview-img" />
+                <div className="preview-info">
+                  <span className="preview-label">✅ Imagen cargada</span>
+                  <button type="button" className="btn-remove-preview" onClick={handleRemoveImage}>
+                    🗑️ Quitar Imagen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="no-image-placeholder">
+                <span>🖼️ Sin imagen cargada actualmente</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* BOTONES DE ACCIÓN */}
         <div className="form-actions">
-          <button type="button" className="btn-cancel" onClick={handleCancelar}>Restablecer</button>
-          <button type="button" className="btn-save" onClick={handleGuardar}>💾 Guardar Cambios</button>
+          <button type="button" className="btn-cancel" onClick={handleCancelar}>
+            Restablecer
+          </button>
+          <button type="button" className="btn-save" onClick={handleGuardar}>
+            💾 Guardar Cambios
+          </button>
         </div>
-
-      </div>
+      </form>
     </div>
   );
 }

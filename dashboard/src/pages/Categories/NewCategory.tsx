@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NewCategory.css";
 
 export default function NewCategory() {
@@ -21,7 +21,7 @@ export default function NewCategory() {
 
     const handleSave = async () => {
         if(category.name.trim() === ""){
-            alert("Debe ingresar un nombre.");
+            alert("Debe ingresar un nombre para la categoría.");
             return;
         }
 
@@ -37,7 +37,7 @@ export default function NewCategory() {
             });
 
             if(response.ok){
-                alert("Categoría creada correctamente.");
+                alert("¡Categoría creada correctamente!");
                 navigate('/categories');
             }else{
                 alert("No se pudo crear la categoría.");
@@ -49,18 +49,23 @@ export default function NewCategory() {
     };
 
     return(
-        <div className="new-product-container">
-            <h2>Dar de alta una nueva categoría</h2>
+        <div className="new-category-container">
+            <div className="new-category-header">
+                <Link to="/categories" className="back-link">← Volver a Categorías</Link>
+                <h2>Dar de alta una nueva categoría</h2>
+                <p className="subtitle-text">Ingresa el nombre de la nueva categoría para el catálogo.</p>
+            </div>
 
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={(e) => e.preventDefault()} className="new-category-form">
                 <div className="form-group">
-                    <label>Nombre de la Categoría</label>
+                    <label>Nombre de la Categoría *</label>
                     <input
                         type="text"
                         name="name"
                         value={category.name}
                         onChange={handleChange}
-                        placeholder="Ej: Accesorios"
+                        placeholder="Ej: Computación"
+                        required
                     />
                 </div>
 
@@ -78,7 +83,7 @@ export default function NewCategory() {
                         className="btn-save"
                         onClick={handleSave}
                     >
-                        Guardar Categoría
+                        💾 Guardar Categoría
                     </button>
                 </div>
             </form>

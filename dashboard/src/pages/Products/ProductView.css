@@ -1,39 +1,65 @@
 /* =========================================
-   CONTENEDOR Y HEADER
+   VISTA Y EDICIÓN DE PRODUCTO - ESTILOS
    ========================================= */
 .product-view-container {
     padding: 2rem;
-    max-width: 900px;
-    color: #4d4646;
+    max-width: 850px;
+    background-color: var(--bg-card, #ffffff);
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 0 auto;
 }
 
 .product-view-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    font-size: 0.85rem;
+    color: var(--primary-brand, #1ea811);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }
 
 .product-view-header h2 {
-    font-weight: 500;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-heading, #2d2929);
     margin: 0;
+}
+
+.subtitle-text {
+    font-size: 0.95rem;
+    color: var(--text-muted, #6b7280);
+    margin-top: 0.25rem;
 }
 
 .btn-danger-pill {
     background-color: transparent;
-    color: #4d4646;
-    border: 1px solid #ccc;
-    padding: 0.5rem 1.5rem;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 0.5rem 1.2rem;
     border-radius: 20px;
     cursor: pointer;
     font-weight: 500;
+    font-size: 0.85rem;
     transition: all 0.2s;
 }
 
 .btn-danger-pill:hover {
-    background-color: #e63946;
-    color: white;
-    border-color: #e63946;
+    background-color: #ef4444;
+    color: #ffffff;
 }
 
 /* =========================================
@@ -43,20 +69,27 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    padding: 1.25rem;
+    background-color: var(--bg-body, #f8fafc);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color, #e5e7eb);
+    margin-bottom: 2rem;
 }
 
 .summary-image {
     width: 80px;
     height: 80px;
-    border-radius: 12px;
+    border-radius: 0.5rem;
     object-fit: cover;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color, #e5e7eb);
+    background-color: #ffffff;
 }
 
 .summary-details h3 {
-    margin: 0 0 0.8rem 0;
-    font-weight: 500;
+    margin: 0 0 0.6rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-heading, #2d2929);
 }
 
 .summary-stats {
@@ -72,136 +105,119 @@
 }
 
 .stat-value {
-    font-size: 1.4rem;
-    font-weight: bold;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-heading, #2d2929);
 }
 
 .stat-label {
-    font-size: 0.6rem;
-    color: #888;
+    font-size: 0.65rem;
+    color: var(--text-muted, #6b7280);
     line-height: 1.2;
+    font-weight: 600;
 }
 
 .store-pill {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    background-color: #f0f0f0;
-    padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+    gap: 0.4rem;
+    background-color: var(--btn-secondary-bg, #e5e7eb);
+    padding: 0.3rem 0.8rem;
     border-radius: 20px;
-    text-decoration: none;
-    color: #4d4646;
+    color: var(--text-color, #4d4646);
     font-size: 0.85rem;
     font-weight: 500;
 }
 
-.store-avatar {
-    background-color: #333;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+/* =========================================
+   FORMULARIO Y GRID
+   ========================================= */
+.product-edit-form {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.7rem;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-/* =========================================
-   FORMULARIO DE EDICIÓN
-   ========================================= */
-.product-form-container h3 {
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.5rem;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.5rem;
-    max-width: 500px;
+    gap: 0.5rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
 }
 
 .form-group label {
     font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color, #4d4646);
 }
 
-/* Inputs redondeados tipo Pill */
-.form-group input[type="text"], 
-.form-group input[type="number"],
-.form-group select {
-    padding: 0.8rem 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 1rem;
-    outline: none;
-    background-color: transparent;
-    color: #4d4646;
-    transition: border-color 0.2s;
-}
-
+.form-group input,
+.form-group select,
 .form-group textarea {
-    padding: 1rem 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--input-border, #d1d5db);
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background-color: var(--input-bg, #ffffff);
+    color: var(--text-color, #333333);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
-    background-color: transparent;
-    color: #4d4646;
-    resize: vertical;
+    border-color: var(--primary-brand, #1ea811);
+    box-shadow: 0 0 0 3px rgba(30, 168, 17, 0.15);
 }
 
-.form-group input:focus, 
-.form-group textarea:focus,
-.form-group select:focus {
-    border-color: #1ea811;
-}
-
-/* Control de Stock agrupado */
+/* Control de Stock con Botones +/- */
 .stock-controls {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    width: fit-content;
+    border: 1px solid var(--input-border, #d1d5db);
+    border-radius: 0.5rem;
     overflow: hidden;
+    background-color: var(--input-bg, #ffffff);
 }
 
 .stock-controls button {
-    background-color: transparent;
+    background-color: var(--btn-secondary-bg, #f3f4f6);
     border: none;
-    padding: 0.8rem 1.2rem;
+    padding: 0.75rem 1.25rem;
     cursor: pointer;
-    font-size: 1.2rem;
-    color: #4d4646;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color, #4d4646);
+    transition: background-color 0.2s;
 }
 
 .stock-controls button:hover {
-    background-color: #f0f0f0;
+    background-color: var(--btn-secondary-hover, #e5e7eb);
 }
 
 .stock-controls input {
-    width: 60px;
     border: none !important;
     text-align: center;
-    padding: 0.8rem 0 !important;
     border-radius: 0 !important;
-    -moz-appearance: textfield;
-}
-
-.stock-controls input::-webkit-outer-spin-button,
-.stock-controls input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    box-shadow: none !important;
+    width: 100%;
 }
 
 /* =========================================
-   SECCIÓN DE IMAGEN Y PESTAÑAS
+   SECCIÓN DE CARGA DE IMAGEN
    ========================================= */
-.image-upload-box {
+.image-upload-section {
     background-color: var(--bg-body, #f9fafb);
     padding: 1.25rem;
     border-radius: 0.75rem;
@@ -256,7 +272,6 @@
     background-color: rgba(30, 168, 17, 0.1);
 }
 
-/* Previsualización de Imagen */
 .image-preview-card {
     display: flex;
     align-items: center;
@@ -314,42 +329,49 @@
 }
 
 /* =========================================
-   BOTONES DE GUARDAR Y CANCELAR
+   BOTONES DE ACCIÓN
    ========================================= */
 .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    margin-top: 2rem;
-    max-width: 500px;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color, #e5e7eb);
 }
 
 .btn-cancel {
-    background-color: transparent;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color, #d1d5db);
+    background-color: var(--btn-secondary-bg, #f3f4f6);
     color: var(--text-color, #4d4646);
-    border: 1px solid var(--border-color, #ccc);
-    padding: 0.8rem 2rem;
-    border-radius: 25px;
+    border-radius: 0.5rem;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
 .btn-cancel:hover {
-    background-color: var(--btn-secondary-hover, #f0f0f0);
+    background-color: var(--btn-secondary-hover, #e5e7eb);
 }
 
 .btn-save {
-    background-color: #1ea811;
-    color: white;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--primary-brand, #1ea811);
+    color: #ffffff;
     border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 25px;
+    border-radius: 0.5rem;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
     transition: background-color 0.2s;
 }
 
 .btn-save:hover {
-    background-color: #1a8c0f;
+    background-color: var(--primary-brand-dark, #1a6813);
+}
+
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }

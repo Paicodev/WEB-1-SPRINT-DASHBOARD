@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
 import './ProductsList.css';
 
-// TODO (adaptar al modelo de DB) Definimos el tipo de dato 
 interface Product {
   id: number;
   name: string;
   category: string;
   price: number;
   stock: number;
-  imageUrl: string;
+  image?: string;
+  imageUrl?: string;
 }
 
 const ProductsList: React.FC = () => {
@@ -20,31 +20,38 @@ const ProductsList: React.FC = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        
-        // Petición GET al endpoint principal de productos en el backend
-        const response = await fetch('http://localhost:3000/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         
         if (response.ok) {
-          // Si Express responde con un status 200, parseamos el JSON
           const data = await response.json();
-          setProducts(data); // Guardamos los datos reales en el estado de React
+          setProducts(data);
         } else {
           console.error("El servidor respondió con un error:", response.status);
         }
       } catch (error) {
         console.error("Error de red al intentar conectar con el backend:", error);
       } finally {
-        // Independientemente de si falla o tiene éxito, quitamos el loader
         setLoading(false); 
       }
     };
 
     fetchProducts();
-  }, []); // El array vacío asegura que la petición ocurra una sola vez al cargar la página
+  }, [API_URL]);
+
+  // Helper para construir la URL completa de la imagen (local, remota o Base64)
+  const getImageUrl = (img?: string) => {
+    if (!img) return 'https://placehold.co/60x60/2d3748/ffffff?text=Prod';
+    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) {
+      return img;
+    }
+    return `${API_URL}${img.startsWith('/') ? '' : '/'}${img}`;
+  };
 
   // Filtramos los productos basándonos en el término de búsqueda
   const filteredProducts = products.filter(product =>
@@ -74,7 +81,7 @@ const ProductsList: React.FC = () => {
 
       <div className="products-list-content">
         {loading ? (
-          <div className="loading-message">Cargando...</div>
+          <div className="loading-message">Cargando productos...</div>
         ) : (
           <table className="products-table">
             <thead>
@@ -91,12 +98,16 @@ const ProductsList: React.FC = () => {
               {filteredProducts.map((product) => (
                 <tr key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
                   <td className="cell-image">
-                    <ImageWithLoader src={product.imageUrl} alt={product.name} className="product-image" />
+                    <ImageWithLoader 
+                      src={getImageUrl(product.image || product.imageUrl)} 
+                      alt={product.name} 
+                      className="product-image" 
+                    />
                   </td>
                   <td>{product.id}</td>
                   <td>{product.name}</td>
-                  <td>{product.category}</td>
-                  <td>${product.price.toFixed(2)}</td>
+                  <td>{product.category || 'Sin categoría'}</td>
+                  <td>${product.price}</td>
                   <td>{product.stock}</td>
                 </tr>
               ))}
