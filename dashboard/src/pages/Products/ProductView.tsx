@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useCategories } from '../../utils/useCategories';
 import './ProductView.css';
-
-interface Category {
-  id: number;
-  name: string;
-}
 
 export default function ProductView() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { categories } = useCategories();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-  const [categories, setCategories] = useState<Category[]>([]);
   const [imageInputMode, setImageInputMode] = useState<'file' | 'url'>('file');
 
   const [product, setProduct] = useState({
@@ -29,23 +25,6 @@ export default function ProductView() {
 
   // Estado borrador para el formulario
   const [editForm, setEditForm] = useState(product);
-
-  // 1. Cargar las categorías del Backend
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/categories`);
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
-        }
-      } catch (error) {
-        console.error("Error al cargar categorías:", error);
-      }
-    };
-
-    fetchCategories();
-  }, [API_URL]);
 
   // 2. Cargar los datos del producto actual
   useEffect(() => {
@@ -170,6 +149,7 @@ export default function ProductView() {
         setProduct(formatted);
         setEditForm(formatted);
         alert("¡Producto actualizado con éxito!");
+        navigate('/products');
       } else {
         alert("No se pudo actualizar el producto en el servidor.");
       }
@@ -205,8 +185,15 @@ export default function ProductView() {
   const getDisplayImage = () => {
     const img = editForm.image || product.image;
     if (!img) return 'https://placehold.co/100x100/2d3748/ffffff?text=Prod';
-    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) return img;
-    return `${API_URL}${img.startsWith('/') ? '' : '/'}${img}`;
+    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) {
+      return img;
+    }
+    if (img.startsWith('/img/') || img.startsWith('img/')) {
+      const cleanPath = img.startsWith('/') ? img : `/${img}`;
+      return `${API_URL}${cleanPath}`;
+    }
+    const cleanImg = img.startsWith('/') ? img.slice(1) : img;
+    return `${API_URL}/img/${cleanImg}`;
   };
 
   return (

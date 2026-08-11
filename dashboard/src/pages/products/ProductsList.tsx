@@ -44,13 +44,18 @@ const ProductsList: React.FC = () => {
     fetchProducts();
   }, [API_URL]);
 
-  // Helper para construir la URL completa de la imagen (local, remota o Base64)
+  // Helper para construir la URL completa de la imagen (Base64, URL externa, /img/... o nombre de archivo)
   const getImageUrl = (img?: string) => {
     if (!img) return 'https://placehold.co/60x60/2d3748/ffffff?text=Prod';
     if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) {
       return img;
     }
-    return `${API_URL}${img.startsWith('/') ? '' : '/'}${img}`;
+    if (img.startsWith('/img/') || img.startsWith('img/')) {
+      const cleanPath = img.startsWith('/') ? img : `/${img}`;
+      return `${API_URL}${cleanPath}`;
+    }
+    const cleanImg = img.startsWith('/') ? img.slice(1) : img;
+    return `${API_URL}/img/${cleanImg}`;
   };
 
   // Filtramos los productos basándonos en el término de búsqueda

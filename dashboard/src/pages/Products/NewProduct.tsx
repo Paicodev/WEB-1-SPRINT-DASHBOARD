@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCategories } from '../../utils/useCategories';
 import './NewProduct.css';
-
-interface Category {
-    id: number;
-    name: string;
-}
 
 export default function NewProduct() {
     const navigate = useNavigate();
+    const { categories } = useCategories();
 
-    const [categories, setCategories] = useState<Category[]>([]);
     const [imageInputMode, setImageInputMode] = useState<'file' | 'url'>('file');
 
     const [product, setProduct] = useState({
@@ -24,23 +20,6 @@ export default function NewProduct() {
     });
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
-    // 1. Cargamos las categorías disponibles desde el Backend al montar el componente
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await fetch(`${API_URL}/api/categories`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setCategories(data);
-                }
-            } catch (error) {
-                console.error("Error al cargar categorías:", error);
-            }
-        };
-
-        fetchCategories();
-    }, [API_URL]);
 
     // Controlador de eventos para inputs de texto, números y selects
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
