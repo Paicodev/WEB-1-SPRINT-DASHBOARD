@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCategories } from '../../utils/useCategories';
+import { authFetch } from '../../utils/auth';
 import './NewProduct.css';
 
 export default function NewProduct() {
@@ -104,7 +105,7 @@ export default function NewProduct() {
 
         // PETICIÓN HTTP AL BACKEND (POST /api/products)
         try {
-            const response = await fetch(`${API_URL}/api/products`, {
+            const response = await authFetch(`${API_URL}/api/products`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

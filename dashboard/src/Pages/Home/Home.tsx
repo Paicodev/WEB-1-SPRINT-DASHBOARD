@@ -1,6 +1,6 @@
 import DashboardCard from '../../Components/Organisms/DashboardCard';
 import { useState, useEffect } from 'react';
-import { getUser } from '../../utils/auth';
+import { getUser, authFetch } from '../../utils/auth';
 import './Home.css';
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/stats`);
+                const response = await authFetch(`${API_URL}/api/stats`);
 
                 if (!response.ok) {
                     throw new Error("No se pudieron obtener las estadísticas.");

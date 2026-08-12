@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
+import { authFetch } from '../../utils/auth';
 import './ProductsList.css';
 
 interface Product {
@@ -26,7 +27,7 @@ const ProductsList: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_URL}/api/products`);
+        const response = await authFetch(`${API_URL}/api/products`);
         
         if (response.ok) {
           const data = await response.json();

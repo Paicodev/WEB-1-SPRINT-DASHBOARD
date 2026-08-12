@@ -47,3 +47,30 @@ export function logout(): void {
 export function isAuthenticated(): boolean {
     return Boolean(localStorage.getItem(TOKEN_KEY));
 }
+
+/**
+ * Helper para realizar llamadas a la API agregando automáticamente el token JWT
+ * Si el backend responde 401 (token expirado), limpia la sesión y redirige al login.
+ */
+export async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
+    const token = getToken();
+    const headers = new Headers(options.headers || {});
+
+    // Adjuntar el token JWT en el encabezado Authorization
+    if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    const response = await fetch(url, {
+        ...options,
+        headers
+    });
+
+    // Si el backend rechaza por token inválido o expirado, cerrar sesión
+    if (response.status === 401 && !url.includes('/api/auth/login')) {
+        logout();
+        window.location.href = '/login';
+    }
+
+    return response;
+}

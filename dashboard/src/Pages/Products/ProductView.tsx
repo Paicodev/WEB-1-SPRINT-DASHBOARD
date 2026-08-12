@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../utils/useCategories';
+import { authFetch } from '../../utils/auth';
 import './ProductView.css';
 
 export default function ProductView() {
@@ -30,7 +31,7 @@ export default function ProductView() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/products/${id}`);
+        const response = await authFetch(`${API_URL}/api/products/${id}`);
 
         if (response.ok) {
           const data = await response.json();
@@ -131,7 +132,7 @@ export default function ProductView() {
     };
 
     try {
-      const response = await fetch(`${API_URL}/api/products/${id}`, {
+      const response = await authFetch(`${API_URL}/api/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -165,7 +166,7 @@ export default function ProductView() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/products/${id}`, {
+      const response = await authFetch(`${API_URL}/api/products/${id}`, {
         method: "DELETE"
       });
 

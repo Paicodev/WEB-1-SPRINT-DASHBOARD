@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../../utils/auth';
 import './UsersList.css';
 
 // Definición de la interfaz TypeScript para la entidad Usuario
@@ -6,6 +7,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  role?: string;
   created_at?: string;
 }
 
@@ -25,8 +27,8 @@ const UsersList: React.FC = () => {
       try {
         setLoading(true);
 
-        // Petición GET al endpoint /api/users
-        const response = await fetch(`${API_URL}/api/users`);
+        // Petición GET autenticada al endpoint /api/users
+        const response = await authFetch(`${API_URL}/api/users`);
 
         if (response.ok) {
           const data = await response.json();
@@ -79,6 +81,7 @@ const UsersList: React.FC = () => {
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Correo Electrónico</th>
+                <th>Rol</th>
                 <th>Fecha de Registro</th>
               </tr>
             </thead>
@@ -88,6 +91,18 @@ const UsersList: React.FC = () => {
                   <td>#{user.id}</td>
                   <td style={{ fontWeight: '600' }}>👤 {user.name}</td>
                   <td>{user.email}</td>
+                  <td>
+                    <span style={{
+                      padding: '3px 10px',
+                      borderRadius: '12px',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      backgroundColor: user.role === 'admin' ? 'rgba(30, 168, 17, 0.12)' : 'rgba(100, 116, 139, 0.12)',
+                      color: user.role === 'admin' ? '#1ea811' : '#64748b'
+                    }}>
+                      {user.role === 'admin' ? '👑 Administrador' : '👤 Cliente'}
+                    </span>
+                  </td>
                   <td>
                     {/* Formateo de fecha amigable para el usuario */}
                     {user.created_at

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { authFetch } from './auth';
 
 export interface Category {
   id: number;
@@ -15,7 +16,7 @@ export function useCategories() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_URL}/api/categories`);
+        const response = await authFetch(`${API_URL}/api/categories`);
         if (response.ok) {
           const data = await response.json();
           setCategories(data);

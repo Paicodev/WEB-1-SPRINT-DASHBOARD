@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { authFetch } from "../../utils/auth";
 import "./CategoryView.css";
 
 export default function CategoryView() {
@@ -18,7 +19,7 @@ export default function CategoryView() {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/categories/${id}`);
+                const response = await authFetch(`${API_URL}/api/categories/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     const categoryData = {
@@ -54,7 +55,7 @@ export default function CategoryView() {
         }
 
         try {
-            const response = await fetch(`${API_URL}/api/categories/${id}`, {
+            const response = await authFetch(`${API_URL}/api/categories/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -83,7 +84,7 @@ export default function CategoryView() {
         }
 
         try {
-            const response = await fetch(`${API_URL}/api/categories/${id}`, {
+            const response = await authFetch(`${API_URL}/api/categories/${id}`, {
                 method: "DELETE"
             });
 

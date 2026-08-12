@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { authFetch } from "../../utils/auth";
 import "./NewCategory.css";
 
 export default function NewCategory() {
@@ -28,7 +29,7 @@ export default function NewCategory() {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
         try{
-            const response = await fetch(`${API_URL}/api/categories`,{
+            const response = await authFetch(`${API_URL}/api/categories`,{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
