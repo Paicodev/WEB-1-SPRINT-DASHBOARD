@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useTheme from '../../utils/useTheme';
+import { getUser, logout } from '../../utils/auth';
 import './Layout.css';
 
 interface LayoutProps {
@@ -11,6 +12,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarVisibleOpen, setSidebarOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const currentUser = getUser();
 
   // Abre/Cierra el menú con el botón
   const toggleSidebar = () => {
@@ -20,6 +23,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // Función específica para forzar el cierre (al tocar afuera o al navegar)
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -61,10 +69,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </NavLink>
         </nav>
 
-        <div className="user-profile-link">
+        <div className="user-profile-link" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <NavLink to="/profile" onClick={closeSidebar} className={({ isActive }) => isActive ? "profile-item active" : "profile-item"} style={{ color: 'white', textDecoration: 'none' }}>
-            👤 Mi Perfil
+            👤 {currentUser ? currentUser.name : 'Mi Perfil'}
           </NavLink>
+          <button 
+            type="button" 
+            onClick={handleLogout}
+            style={{
+              background: 'transparent',
+              border: '1px solid rgba(239, 68, 68, 0.5)',
+              color: '#ef4444',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              margin: '0 15px 15px 15px',
+              transition: 'background-color 0.2s'
+            }}
+          >
+            🚪 Cerrar Sesión
+          </button>
         </div>
 
       </aside>

@@ -1,12 +1,11 @@
 import DashboardCard from '../../Components/Organisms/DashboardCard';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { getUser } from '../../utils/auth';
 import './Home.css';
 
 const Home = () => {
-
-    //TODO Dato temporal: Reemplazar con la información del usuario cuando se implementen las sesiones.
-    const userName = "Geronimo";
+    const currentUser = getUser();
+    const userName = currentUser ? currentUser.name : 'Administrador';
 
     const [stats, setStats] = useState({
         totalProducts: 0,
